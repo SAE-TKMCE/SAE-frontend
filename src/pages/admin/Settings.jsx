@@ -40,19 +40,7 @@ const Settings = () => {
     }
   };
 
-  const handleSaveSetting = async (key, value) => {
-    try {
-      setSaving(true);
-      await adminService.updateSetting(key, value);
-      setSettings(prev => ({ ...prev, [key]: value }));
-      alert('Setting saved successfully!');
-    } catch (error) {
-      console.error('Error saving setting:', error);
-      alert('Failed to save setting');
-    } finally {
-      setSaving(false);
-    }
-  };
+  // Single-setting save handled via bulk save for now
 
   const handleBulkSave = async (settingsToSave) => {
     try {
@@ -638,7 +626,7 @@ const IntegrationsSettings = ({ settings, onSave, saving }) => {
 const AdminUsersSettings = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showInviteModal] = useState(false); // future: invite modal
 
   useEffect(() => {
     fetchAdminUsers();
@@ -663,8 +651,7 @@ const AdminUsersSettings = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h4 className="text-lg font-medium text-gray-900">Admin Users</h4>
-        <button
-          onClick={() => setShowInviteModal(true)}
+  <button
           className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
         >
           ➕ Invite Admin
@@ -744,32 +731,18 @@ const AdminUsersSettings = () => {
 
 // Backup Settings Component
 const BackupSettings = () => {
-  const [backupStatus, setBackupStatus] = useState({
+  const [backupStatus] = useState({
     lastBackup: null,
     backupSize: 0,
     autoBackupEnabled: false
   });
 
   const handleCreateBackup = async () => {
-    // Simulate backup creation
-    setBackupStatus(prev => ({
-      ...prev,
-      lastBackup: new Date().toISOString(),
-      backupSize: Math.random() * 1024 * 1024 * 100 // Random size up to 100MB
-    }));
-    alert('Backup created successfully!');
+    alert('Backup functionality would be implemented here');
   };
 
   const handleRestoreBackup = async () => {
-    // Simulate restore functionality
-    const confirmed = window.confirm('Are you sure you want to restore from backup? This will overwrite current data.');
-    if (confirmed) {
-      setBackupStatus(prev => ({
-        ...prev,
-        lastBackup: new Date().toISOString()
-      }));
-      alert('Backup restored successfully!');
-    }
+    alert('Restore functionality would be implemented here');
   };
 
   return (

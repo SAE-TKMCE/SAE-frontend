@@ -7,7 +7,6 @@ const MediaManager = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
@@ -137,20 +136,7 @@ const MediaManager = () => {
     }
   };
 
-  const handleUpdateAsset = async (assetId, updates) => {
-    try {
-      await adminService.updateMediaAsset(assetId, updates);
-      setMediaAssets(prev => 
-        prev.map(asset => 
-          asset.id === assetId ? { ...asset, ...updates } : asset
-        )
-      );
-      alert('Asset updated successfully!');
-    } catch (error) {
-      console.error('Error updating asset:', error);
-      alert('Failed to update asset');
-    }
-  };
+  // Note: update handler will be added when inline edit UI is introduced
 
   const toggleAssetSelection = (assetId) => {
     setSelectedAssets(prev =>

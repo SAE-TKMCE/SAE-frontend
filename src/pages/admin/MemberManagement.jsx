@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { adminService } from '../../services/supabaseMock';
-import imagekitService, { imageHelpers } from '../../services/imagekit';
+import { imageHelpers } from '../../services/imagekit';
 
 const MemberManagement = () => {
   const [members, setMembers] = useState([]);
@@ -12,7 +12,7 @@ const MemberManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
-  const [showBulkActions, setShowBulkActions] = useState(false);
+  // Bulk actions UI can be added later
   const [actionLoading, setActionLoading] = useState({});
 
   useEffect(() => {
@@ -74,8 +74,7 @@ const MemberManagement = () => {
         )
       );
       
-      setSelectedMembers([]);
-      setShowBulkActions(false);
+  setSelectedMembers([]);
       alert(`${selectedMembers.length} members updated to ${newStatus}`);
     } catch (error) {
       console.error('Error bulk updating members:', error);
