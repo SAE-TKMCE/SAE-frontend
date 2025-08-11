@@ -1,10 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cross-browser compatibility fixes */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
+  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* Fix for Edge/IE flexbox issues */
+.flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/* Ensure images scale properly across browsers */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix for button styling differences */
+button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Mobile-specific responsive fixes (up to 640px) */
+@media screen and (max-width: 640px) {
+  /* More aggressive mobile positioning */
+  .hero-buttons {
+    bottom: 0.5rem !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* Tablet-specific responsive fixes */
+/* iPad Mini (768px), iPad Air (820px), Surface Pro (912px) */
+@media screen and (min-width: 640px) and (max-width: 1024px) {
+  /* Hero section title spacing for tablets */
+  .hero-title {
+    line-height: 0.85 !important;
+    margin-bottom: 3rem !important;
+  }
+  
+  /* More aggressive button container positioning for tablets */
+  .hero-buttons {
+    margin-top: 0.5rem !important;
+    position: relative !important;
+    bottom: auto !important;
+  }
+}
+
+/* Specific iPad Air fixes (820px wide) */
+@media screen and (min-width: 820px) and (max-width: 820px) {
+  .hero-title {
+    line-height: 0.8 !important;
+    font-size: 4.5rem !important;
+    margin-bottom: 4rem !important;
+  }
 }
 
 code {

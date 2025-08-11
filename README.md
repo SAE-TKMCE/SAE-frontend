@@ -1,4 +1,36 @@
-# Getting Started with Create React App
+# SAE TKMCE Website
+
+This is the frontend for the SAE TKMCE (Society of Automotive Engineers - TKM College of Engineering) website built with React.
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the environment variables in `.env`:
+   - `REACT_APP_API_URL`: Backend API URL (default: http://127.0.0.1:8000)
+   - `REACT_APP_ADOBE_FONTS_TOKEN`: Your Adobe Fonts Kit ID
+
+### Adobe Fonts Setup
+
+To enable the custom typography (owners font family):
+
+1. Go to [Adobe Fonts](https://fonts.adobe.com/)
+2. Sign in with your Adobe account
+3. Navigate to "Web Projects" in your account
+4. Create a new project or use an existing one
+5. Add the "owners" font family to your project
+6. Copy the Kit ID from your project
+7. Add the Kit ID to your `.env` file as `REACT_APP_ADOBE_FONTS_TOKEN`
+
+Example:
+```env
+REACT_APP_ADOBE_FONTS_TOKEN=abc1234
+```
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

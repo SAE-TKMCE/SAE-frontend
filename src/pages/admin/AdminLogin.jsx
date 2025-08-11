@@ -1,0 +1,228 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContextMock';
+
+// Add custom styles for the grid animation
+const styles = `
+  @keyframes gridMove {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100px 100px;
+    }
+  }
+`;
+
+const AdminLogin = () => {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Redirect if already logged in as admin
+  React.useEffect(() => {
+    if (user && user.is_staff) {
+      navigate('/admin');
+    }
+  }, [user, navigate]);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      await login(formData.email, formData.password);
+      const userData = JSON.parse(localStorage.getItem('user'));
+      if (userData && userData.is_staff) {
+        navigate('/admin');
+      } else {
+        setError('Access denied. Admin privileges required.');
+      }
+    } catch (error) {
+      setError(error.response?.data?.detail || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <style>{styles}</style>
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Animated Grid Background */}
+        <div className="absolute inset-0 opacity-20">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '50px 50px',
+              animation: 'gridMove 20s ease-in-out infinite alternate'
+            }}
+          ></div>
+        </div>
+
+        {/* Floating Particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 4}s`,
+                animationDuration: `${3 + Math.random() * 2}s`
+              }}
+            ></div>
+          ))}
+        </div>
+
+        <div className="max-w-md w-full space-y-8 relative z-10">
+          <div className="text-center">
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <span className="text-3xl font-bold text-white">⚡</span>
+                </div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 bg-orange-400 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+            <h2 className="text-4xl font-black text-white mb-2" style={{fontFamily: 'Almarai, sans-serif'}}>
+              Admin Portal
+            </h2>
+            <p className="text-gray-400 text-lg">
+              Sign in to access SAE TKMCE admin dashboard
+            </p>
+            <p className="mt-4 text-gray-500">
+              Regular member?{' '}
+              <Link
+                to="/login"
+                className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
+              >
+                Member login here
+              </Link>
+            </p>
+          </div>
+          
+          <div className="bg-gray-800/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/50 p-8">
+            {/* Admin Notice */}
+            <div className="bg-orange-900/30 border border-orange-500/30 text-orange-300 px-4 py-3 rounded-lg mb-6">
+              <div className="flex items-start space-x-2">
+                <span className="text-orange-400 mt-0.5">🔒</span>
+                <p className="text-sm">
+                  <strong>Admin Access Required:</strong> This portal is restricted to SAE TKMCE administrative staff only.
+                </p>
+              </div>
+            </div>
+
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="bg-red-900/50 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg backdrop-blur-sm">
+                  <div className="flex items-center">
+                    <span className="mr-2">⚠️</span>
+                    {error}
+                  </div>
+                </div>
+              )}
+              
+              <div className="space-y-5">
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                    Admin Email Address
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-400">👤</span>
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      className="block w-full pl-10 pr-3 py-3 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm transition-all duration-200"
+                      placeholder="Enter your admin email"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-400">🔑</span>
+                    </div>
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      className="block w-full pl-10 pr-3 py-3 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm transition-all duration-200"
+                      placeholder="Enter your password"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="text-sm">
+                  <button 
+                    type="button" 
+                    className="font-medium text-blue-400 hover:text-blue-300 bg-transparent border-none cursor-pointer transition-colors duration-200"
+                  >
+                    Contact IT support
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  {loading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <span>Authenticating...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <span>⚡</span>
+                      <span>Access Admin Portal</span>
+                    </div>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default AdminLogin;

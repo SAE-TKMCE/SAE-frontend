@@ -1,0 +1,29 @@
+# Ultra-secure Frontend using scratch base and static binary
+FROM node:20-alpine3.19 as builder
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci --only=production --no-audit --no-fund
+
+# Copy source and build
+COPY . .
+RUN npm run build
+
+# Create a minimal static server binary
+RUN npm install -g serve && \
+    which serve
+
+# Minimal production stage using scratch (no OS, just binary)
+FROM scratch
+
+# Copy built app and server binary
+COPY --from=builder /app/build /app
+COPY --from=builder /usr/local/bin/serve /serve
+
+# Expose port
+EXPOSE 3000
+
+# Run static server (no shell needed)
+ENTRYPOINT ["/serve", "-s", "/app", "-l", "3000"]
