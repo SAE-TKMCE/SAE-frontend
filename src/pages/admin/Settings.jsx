@@ -626,7 +626,7 @@ const IntegrationsSettings = ({ settings, onSave, saving }) => {
 const AdminUsersSettings = () => {
   const [adminUsers, setAdminUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showInviteModal] = useState(false); // future: invite modal
+  // const [showInviteModal] = useState(false); // reserved for future invite modal
 
   useEffect(() => {
     fetchAdminUsers();
