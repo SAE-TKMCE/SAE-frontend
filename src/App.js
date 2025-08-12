@@ -24,6 +24,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
+import ScalingViewport from './components/ScalingViewport';
 
 function App() {
   useEffect(() => {
@@ -35,62 +36,74 @@ function App() {
     });
   }, []);
 
+  const enableScaling = process.env.REACT_APP_SCALE_TO_BASE === 'true';
+
+  const appBody = (
+    <div className="App min-h-screen bg-gray-50">
+      <Navbar />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/auth-debug" element={<AuthDebug />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/events/:eventId/register" element={<EventRegistration />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/admin-demo" element={<AdminDashboardDemo />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute>
+                <AdminPanel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/membership"
+            element={
+              <PrivateRoute>
+                <Membership />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/payments"
+            element={
+              <PrivateRoute>
+                <Payments />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+
   return (
     <MockAuthProvider>
       <Router>
         <ErrorBoundary>
-          <div className="App min-h-screen bg-gray-50">
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/auth-debug" element={<AuthDebug />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/events/:id" element={<EventDetail />} />
-              <Route path="/events/:eventId/register" element={<EventRegistration />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/teams" element={<Teams />} />
-              <Route path="/admin-demo" element={<AdminDashboardDemo />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route 
-                path="/admin/*" 
-                element={
-                  <PrivateRoute>
-                    <AdminPanel />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/membership" 
-                element={
-                  <PrivateRoute>
-                    <Membership />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/payments" 
-                element={
-                  <PrivateRoute>
-                    <Payments />
-                  </PrivateRoute>
-                } 
-              />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
+          {enableScaling ? (
+            <ScalingViewport baseWidth={412} baseHeight={915}>
+              {appBody}
+            </ScalingViewport>
+          ) : (
+            appBody
+          )}
         </ErrorBoundary>
       </Router>
     </MockAuthProvider>
