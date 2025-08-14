@@ -20,13 +20,10 @@ const Register = () => {
     first_name: '',
     last_name: '',
     phone: '',
-    college_id: '',
     year_of_study: '',
     branch: '',
     preferred_team: '',
     interests: '',
-    experience: '',
-    skills: '',
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -63,8 +60,6 @@ const Register = () => {
           branch: '',
           preferred_team: '',
           interests: '',
-          experience: '',
-          skills: '',
         });
       }
     } catch (error) {
@@ -338,15 +333,14 @@ const Register = () => {
                         value={formData.branch}
                         onChange={handleChange}
                       >
-                        <option value="" className="bg-gray-800">Select branch</option>
+                        <option value="" className="bg-gray-800">Select Department</option>
                         <option value="CSE" className="bg-gray-800">Computer Science</option>
-                        <option value="ECE" className="bg-gray-800">Electronics</option>
+                        <option value="ECE" className="bg-gray-800">Electronics and Communication</option>
                         <option value="ME" className="bg-gray-800">Mechanical</option>
                         <option value="CE" className="bg-gray-800">Civil</option>
                         <option value="EEE" className="bg-gray-800">Electrical</option>
                         <option value="CHE" className="bg-gray-800">Chemical</option>
-                        <option value="BT" className="bg-gray-800">Biotechnology</option>
-                        <option value="IT" className="bg-gray-800">Information Technology</option>
+                        
                       </select>
                     </div>
                     {errors.branch && <p className="text-red-400 text-xs mt-1">{errors.branch[0]}</p>}

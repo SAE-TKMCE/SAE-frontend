@@ -39,112 +39,80 @@ const Home = () => {
       name: 'VEGHA',
       description: 'Vehicle Engineering & Green Hybrid Automotive',
       icon: (
-        <svg width="48" height="32" viewBox="0 0 90 50" className="stroke-current fill-none stroke-2">
-          <path d="M15 35 L25 30 L65 30 L75 35 L75 40 L65 40 L25 40 L15 40 Z" />
-          <circle cx="25" cy="40" r="6" />
-          <circle cx="65" cy="40" r="6" />
-          <path d="M30 30 L35 25 L55 25 L60 30" />
-          <path d="M40 20 L45 15 L50 20" />
-        </svg>
+         <img 
+          src="/images/teams/veghalogo.png" 
+          alt="VEGHA" 
+        />
       ),
-      color: 'from-green-400 to-green-600',
-      activities: ['Hybrid Vehicle Design', 'Fuel Efficiency', 'Green Technology']
     },
     {
       name: 'HBAJA',
-      description: 'Heavy Baja SAE Team',
+      description: 'Hydrogen Baja SAE Team',
       icon: (
-        <svg width="48" height="28" viewBox="0 0 110 50" className="stroke-current fill-none stroke-2">
-          <path d="M15 35 L25 30 L35 25 L75 25 L85 30 L95 35 L95 40 L85 40 L25 40 L15 40 Z" />
-          <circle cx="30" cy="40" r="6" />
-          <circle cx="80" cy="40" r="6" />
-          <path d="M40 25 L45 20 L65 20 L70 25" />
-          <rect x="20" y="15" width="8" height="8" />
-        </svg>
+        <img 
+          src="/images/teams/BAJA_LW.png" 
+          alt="HBAJA" 
+        />
       ),
-      color: 'from-red-400 to-red-600',
-      activities: ['All-Terrain Vehicle', 'Off-Road Racing', 'Suspension Design']
     },
     {
-      name: 'MBAJA',
-      description: 'Mini Baja SAE Team',
+      name: 'DRONA',
+      description: 'Drona SAE Team',
       icon: (
-        <svg width="48" height="32" viewBox="0 0 80 80" className="stroke-current fill-none stroke-2">
-          <path d="M20 10 L20 70" />
-          <path d="M20 10 L60 10 L50 20 L60 30 L50 40 L60 50 L20 50" />
-          <rect x="20" y="10" width="10" height="10" className="fill-current opacity-50" />
-          <rect x="40" y="10" width="10" height="10" className="fill-current opacity-50" />
-        </svg>
+        <img 
+          src="/images/teams/DRONA_LW.png" 
+          alt="SPOX" 
+        />
       ),
-      color: 'from-orange-400 to-orange-600',
-      activities: ['Mini Baja Competition', 'Vehicle Dynamics', 'Frame Design']
     },
     {
       name: 'XLR8 Racing',
       description: 'Formula SAE Racing Team',
       icon: (
-        <svg width="48" height="24" viewBox="0 0 120 60" className="stroke-current fill-none stroke-2">
-          <path d="M10 40 L20 35 L40 30 L80 30 L100 35 L110 40 L100 45 L80 45 L40 45 L20 45 Z" />
-          <circle cx="25" cy="45" r="8" />
-          <circle cx="95" cy="45" r="8" />
-          <path d="M40 25 L45 20 L65 20 L70 25" />
-          <path d="M30 30 L35 25 L75 25 L80 30" />
-        </svg>
+        <img 
+          src="/images/teams/xlr8-racing.png" 
+          alt="XLR8 Racing" 
+        />
       ),
-      color: 'from-blue-400 to-blue-600',
-      activities: ['Formula Racing', 'Performance Tuning', 'Aerodynamics']
     },
     {
       name: 'XLR8FST',
       description: 'Formula Student Racing Team',
-      icon: (
-        <svg width="48" height="48" viewBox="0 0 100 100" className="stroke-current fill-none stroke-2">
-          <circle cx="50" cy="60" r="25" />
-          <path d="M35 45 L50 25 L65 45" />
-          <path d="M40 40 L60 40" />
-          <circle cx="50" cy="30" r="3" className="fill-current" />
-        </svg>
+      icon: (<img 
+          src="/images/teams/xlr8-fst.png" 
+          alt="SPOX" 
+        />
+        
       ),
-      color: 'from-purple-400 to-purple-600',
-      activities: ['Formula Student', 'International Competition', 'Innovation']
     },
     {
-      name: 'XLR8 E-racing',
-      description: 'Electric Racing Team',
+      name: 'Aerex',
+      description: 'Fixed Wing UAV Team',
       icon: (
-        <svg width="48" height="40" viewBox="0 0 80 100" className="stroke-current fill-none stroke-3">
-          <path d="M30 10 L50 10 L35 40 L55 40 L25 90 L45 60 L25 60 L30 10 Z" />
-        </svg>
+        <img 
+          src="/images/teams/Aerex-logo.png" 
+          alt="Aerex" 
+        />
       ),
-      color: 'from-yellow-400 to-yellow-600',
-      activities: ['Electric Vehicles', 'Battery Technology', 'Sustainability']
     },
     {
       name: 'SPOX',
   description: 'Electric Bicycle Design Team',
       icon: (
-        <svg width="48" height="48" viewBox="0 0 100 100" className="stroke-current fill-none stroke-2">
-          <circle cx="50" cy="50" r="30" />
-          <circle cx="50" cy="50" r="20" />
-          <circle cx="50" cy="50" r="10" />
-          <circle cx="50" cy="50" r="3" className="fill-current" />
-          <path d="M50 20 L50 15" />
-          <path d="M50 80 L50 85" />
-          <path d="M20 50 L15 50" />
-          <path d="M80 50 L85 50" />
-        </svg>
+        <img 
+          src="/images/teams/SPOX-LOGO.png" 
+          alt="SPOX" 
+        />
       ),
-      color: 'from-pink-400 to-pink-600',
-  activities: ['E-bike Design', 'Battery Systems', 'Motor Control']
     }
   ];
 
   const achievements = [
     {
       team: 'XLR8 Racing',
-      title: 'Formula SAE India 2024',
-      position: '3rd Place Overall',
-      year: '2024',
+      title: 'SAE HBAJA 2025',
+      position: 'AIR 12 | KERALA 3',
+      year: '2025',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
           <circle cx="50" cy="60" r="25" />
@@ -156,10 +124,10 @@ const Home = () => {
       )
     },
     {
-      team: 'HBAJA',
-      title: 'BAJA SAE India 2024',
-      position: '1st Place Design',
-      year: '2024',
+      team: 'VEGHA',
+      title: 'TWO Wheeler Design Competition',
+      position: 'AIR 6 | KERALA 2',
+      year: '2025',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
           <circle cx="50" cy="50" r="30" />
@@ -169,10 +137,10 @@ const Home = () => {
       )
     },
     {
-      team: 'VEGHA',
-      title: 'Shell Eco-Marathon',
-      position: '2nd Place Efficiency',
-      year: '2024',
+      team: 'HBAJA',
+      title: 'Design Event',
+      position: 'AIR 5',
+      year: '2025',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-green-400 fill-none stroke-2">
           <path d="M50 15 L35 30 L20 45 L35 60 L50 75 L65 60 L80 45 L65 30 Z" />
@@ -182,10 +150,10 @@ const Home = () => {
       )
     },
     {
-      team: 'XLR8 E-racing',
-      title: 'Formula Student Electric',
-      position: '5th Place Overall',
-      year: '2023',
+      team: 'MOBILE APP DEVELOPMENT',
+      title: 'SAEINDIA SOUTHERN SECTION STUDENT CONVENTION',
+      position: '1st Place',
+      year: '2025',
       icon: (
         <svg width="32" height="32" viewBox="0 0 80 100" className="stroke-yellow-400 fill-none stroke-2">
           <path d="M30 10 L50 10 L35 40 L55 40 L25 90 L45 60 L25 60 L30 10 Z" className="fill-yellow-400 stroke-none" />
@@ -379,13 +347,13 @@ const Home = () => {
                 
                 {/* Central SAE Logo */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                  <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 bg-white rounded-full shadow-2xl border-4 border-blue-600 flex items-center justify-center hover:scale-105 transition-all duration-300">
+                  <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 bg-transparent  rounded-full  flex items-center justify-center hover:scale-105 transition-all duration-300">
                     <div className="text-center">
                       <div className="text-blue-600 font-black text-2xl sm:text-3xl lg:text-4xl tracking-wider mb-1">
-                        SAE
-                      </div>
-                      <div className="text-gray-700 text-xs sm:text-sm font-bold">
-                        TKMCE
+                        <img
+                          src="/logo.png"
+                          alt="SAE TKMCE Logo"
+                        />
                       </div>
                     </div>
                   </div>
@@ -403,7 +371,7 @@ const Home = () => {
                          style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}>
                       
                       {/* Team Logo Circle */}
-                      <div className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 bg-gradient-to-br ${team.color} rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center group`}>
+                      <div className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20  ${team.color} hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center group`}>
                         <div className="text-white scale-75 sm:scale-85 lg:scale-90 group-hover:scale-100 transition-transform duration-300">
                           {team.icon}
                         </div>
@@ -427,13 +395,10 @@ const Home = () => {
             <div className="flex flex-col items-center space-y-6">
               
               {/* Central SAE Logo - Mobile */}
-              <div className="w-24 h-24 bg-white rounded-full shadow-2xl border-4 border-blue-600 flex items-center justify-center">
+              <div className="w-24 h-24 bg-transparent items-center justify-center">
                 <div className="text-center">
                   <div className="text-blue-600 font-black text-xl tracking-wider mb-0.5">
-                    SAE
-                  </div>
-                  <div className="text-gray-700 text-xs font-bold">
-                    TKMCE
+                    <img src="/logo.png" alt="SAE TKMCE Logo"  />
                   </div>
                 </div>
               </div>

@@ -5,38 +5,40 @@ const Teams = () => {
   const teams = [
     {
       name: 'VEGHA',
-      fullName: 'Vehicle Engineering & Green Hybrid Automotive',
-      description: 'Focusing on sustainable and environmentally friendly automotive technologies, hybrid systems, and fuel efficiency optimization.',
-      icon: '🚗',
+      fullName: 'VEGHA SAE TEAM',
+      description: 'Focusing on sustainable and environmentally friendly Electric Two Wheeler technologies.',
+      icon: <img src="/images/teams/veghalogo.png"  alt="VEGHA" />,
       color: 'from-green-400 to-green-600',
       bgColor: 'bg-green-50',
       textColor: 'text-green-600',
+      placeholder: <img src="/images/teams/vegha.png"  alt="VEGHA" />,
       activities: [
-        'Hybrid Vehicle Design',
-        'Fuel Efficiency Optimization',
-        'Green Technology Research',
-        'Alternative Fuel Systems',
-        'Environmental Impact Analysis'
+        'Design of Electric Two Wheelers',
+        'Development of Battery Management Systems',
+        'Lightweight Frame Design',
+        'Cost-Effective Solutions'
       ],
       achievements: [
-        'Shell Eco-Marathon 2024 - 2nd Place Efficiency',
-        'Green Tech Innovation Award 2023',
-        'Best Hybrid Design - Regional Competition 2023'
+        'AIR 5 in the Design Event ',
+        '3rd Rank in Kerala',
+        'AIR 7 in the Cost Event at the SAE 2025 competition held at NATRAX, Madhya Pradesh'
       ],
+      
       projects: [
-        'Hybrid Electric Vehicle Prototype',
+        'Hybrid Electric Prototype',
         'Fuel Cell Technology Research',
         'Solar Panel Integration Systems'
       ]
     },
     {
       name: 'HBAJA',
-      fullName: 'Heavy Baja SAE Team',
+      fullName: 'HYDROGEN Baja SAE Team',
       description: 'Designing and building robust all-terrain vehicles for extreme off-road conditions and heavy-duty applications.',
-      icon: '🚚',
+      icon: <img src="/images/teams/BAJA_LW.png"  alt="HBAJA" />,
       color: 'from-red-400 to-red-600',
       bgColor: 'bg-red-50',
       textColor: 'text-red-600',
+      placeholder: <img src="/images/teams/baja.png"  alt="HBAJA" />,
       activities: [
         'All-Terrain Vehicle Design',
         'Off-Road Racing',
@@ -50,30 +52,30 @@ const Teams = () => {
         'Endurance Competition Winner 2023'
       ],
       projects: [
-        'Heavy-Duty Baja Vehicle',
+        'Hydrogen Baja-XLR8 Vehicle',
         'Advanced Suspension Systems',
         'Roll Cage Design Optimization'
       ]
     },
     {
-      name: 'MBAJA',
-      fullName: 'Mini Baja SAE Team',
+      name: 'DRONA',
+      fullName: 'DRONA SAE Team',
       description: 'Creating compact, agile, and high-performance vehicles for mini baja competitions and recreational use.',
-      icon: '🏁',
+      icon: <img src="/images/teams/DRONA_LW.png"  alt="VEGHA" />,
       color: 'from-orange-400 to-orange-600',
       bgColor: 'bg-orange-50',
       textColor: 'text-orange-600',
+      placeholder: <img src="/images/teams/drona.png"  alt="DRONA" />,
       activities: [
-        'Mini Baja Competition',
-        'Compact Vehicle Dynamics',
-        'Lightweight Frame Design',
-        'Agility Optimization',
+        'Design of Drones',
+        'Development of Battery Management Systems',
+        'Utilizing 3D Printing on Drones',
         'Cost-Effective Solutions'
       ],
       achievements: [
-        'Mini Baja National 2024 - 3rd Place Overall',
-        'Best Cost Report 2023',
-        'Design Excellence Award 2023'
+        'AIR 5 in the Design Event ',
+        '3rd Rank in Kerala',
+        'AIR 7 in the Cost Event at the SAE DRONA 2025 competition held at NATRAX, Madhya Pradesh'
       ],
       projects: [
         'Mini Baja Racing Vehicle',
@@ -85,10 +87,11 @@ const Teams = () => {
       name: 'XLR8 Racing',
       fullName: 'Formula SAE Racing Team',
       description: 'Building high-performance formula-style racing cars for national and international competitions.',
-      icon: '🏎️',
+      icon: <img src="/images/teams/xlr8-racing.png"  alt="XLR8 Racing" />,
       color: 'from-blue-400 to-blue-600',
       bgColor: 'bg-blue-50',
       textColor: 'text-blue-600',
+      placeholder: <img src="/images/teams/XLR8Racing.png"  alt="XLR8" />,
       activities: [
         'Formula Racing',
         'High-Performance Tuning',
@@ -111,10 +114,11 @@ const Teams = () => {
       name: 'XLR8FST',
       fullName: 'Formula Student Racing Team',
       description: 'Competing in international Formula Student competitions with cutting-edge automotive technologies.',
-      icon: '🏆',
+      icon: <img src="/images/teams/xlr8-fst.png"  alt="XLR8FST" />,
       color: 'from-purple-400 to-purple-600',
       bgColor: 'bg-purple-50',
       textColor: 'text-purple-600',
+      placeholder: <img src="/images/teams/xlr8-formula.png"  alt="XLR8FST" />,
       activities: [
         'Formula Student Competition',
         'International Standards',
@@ -134,39 +138,36 @@ const Teams = () => {
       ]
     },
     {
-      name: 'XLR8 E-racing',
-      fullName: 'Electric Racing Team',
-      description: 'Pioneering electric vehicle racing technology with focus on battery systems and electric powertrains.',
-      icon: '⚡',
+      name: 'Aerex',
+      fullName: 'Fixed Wing UAV Team ',
+      description: 'Designing and constructing next-generation fixed-wing UAVs.',
+      icon: <img src="/images/teams/Aerex-logo.png"  alt="Aerex" />,
       color: 'from-yellow-400 to-yellow-600',
       bgColor: 'bg-yellow-50',
       textColor: 'text-yellow-600',
+      placeholder: <img src="/images/teams/Aerex.png"  alt="Aerex" />,
       activities: [
-        'Electric Vehicle Racing',
-        'Battery Technology',
-        'Electric Powertrains',
-        'Charging Systems',
-        'Energy Management'
+        'Design of UAVs',
+        'Modular Assembly',
+        'Aerodynamics',
       ],
       achievements: [
-        'Formula Student Electric 2023 - 5th Place',
-        'Best Electric Innovation 2023',
-        'Sustainability Award 2023'
+        'Overall Rank 36 in SAE Drone Development Challenge',
       ],
       projects: [
-        'Electric Racing Vehicle',
-        'Advanced Battery Management',
-        'Regenerative Braking Systems'
+        'Fixed Wing UAV Prototype',
+        'Advanced Battery Management'
       ]
     },
     {
       name: 'SPOX',
       fullName: 'Electric Bicycle Design Team',
       description: 'Designing and building high-efficiency electric bicycles with a focus on powertrain, battery management, and sustainable mobility.',
-      icon: '🎯',
+      icon: <img src="/images/teams/SPOX-LOGO.png"  alt="SPOX" />,
       color: 'from-pink-400 to-pink-600',
       bgColor: 'bg-pink-50',
       textColor: 'text-pink-600',
+      placeholder: <img src="/images/teams/spox.png"  alt="SPOX" />,
       activities: [
         'E-bike Frame Design',
         'Battery Management Systems',
@@ -284,10 +285,16 @@ const Teams = () => {
                     {/* Team Image Placeholder */}
                     <div className="bg-white rounded-xl p-8 shadow-lg">
                       <div className="h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-8xl mb-4">{team.icon}</div>
-                          <p className="text-gray-500">Team Photo Placeholder</p>
-                          <p className="text-sm text-gray-400">Image slot available</p>
+                        <div className="w-full h-full">
+                          {team.placeholder && (
+                            <img 
+                              src={team.placeholder.props.src} 
+                              alt={team.placeholder.props.alt}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                        </div>
+                      
                         </div>
                       </div>
                     </div>
@@ -341,7 +348,7 @@ const Teams = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+           
             ))}
           </div>
         </div>

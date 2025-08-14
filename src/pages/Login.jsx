@@ -203,34 +203,10 @@ const Login = () => {
               </button>
             </div>
           </form>
-          
-          {/* Test Credentials for Development */}
-          <div className="mt-8 p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
-            <h3 className="text-sm font-medium text-gray-300 mb-3">🧪 Test Credentials (Development)</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-              <div className="bg-gray-800/50 p-3 rounded border border-gray-600/50">
-                <div className="text-green-400 font-medium">Admin</div>
-                <div className="text-gray-400">admin@sae.ac.in</div>
-                <div className="text-gray-400">admin123</div>
-              </div>
-              <div className="bg-gray-800/50 p-3 rounded border border-gray-600/50">
-                <div className="text-blue-400 font-medium">Member</div>
-                <div className="text-gray-400">user@sae.ac.in</div>
-                <div className="text-gray-400">user123</div>
-              </div>
-              <div className="bg-gray-800/50 p-3 rounded border border-gray-600/50">
-                <div className="text-purple-400 font-medium">Test User</div>
-                <div className="text-gray-400">test@test.com</div>
-                <div className="text-gray-400">test123</div>
-              </div>
-            </div>
-            <div className="mt-2 text-xs text-gray-500">
-              💡 <a href="/auth-debug" className="text-blue-400 hover:text-blue-300">Visit Auth Debug page</a> for more testing options
-            </div>
+            
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
