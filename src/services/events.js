@@ -16,11 +16,6 @@ export const eventsService = {
     return response.data;
   },
 
-  async getRegistrationForm(id) {
-    const response = await api.get(`/events/${id}/registration-form/`);
-    return response.data;
-  },
-
   async getMyRegistrations() {
     const response = await api.get('/events/my-registrations/');
     return response.data;
