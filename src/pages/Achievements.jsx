@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 const Achievements = () => {
   const [selectedYear] = useState('all');
@@ -164,6 +165,10 @@ const Achievements = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Achievements | SAE TKMCE</title>
+        <meta name="description" content="Explore SAE TKMCE's achievements in engineering competitions, innovation, and teamwork. See our awards, milestones, and project highlights." />
+      </Helmet>
       <style>{`
         @keyframes scroll-infinite {
           0% {

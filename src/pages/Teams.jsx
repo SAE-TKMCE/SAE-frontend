@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 const Teams = () => {
@@ -189,7 +190,12 @@ const Teams = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <>
+      <Helmet>
+        <title>Teams | SAE TKMCE</title>
+        <meta name="description" content="Meet the SAE TKMCE teams: VEGHA, HBAJA, SPOX, and more. Learn about our projects, achievements, and engineering focus areas." />
+      </Helmet>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 text-white py-20">
         <div className="absolute inset-0 opacity-20">
@@ -379,7 +385,8 @@ const Teams = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 

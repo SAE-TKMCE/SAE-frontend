@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 
@@ -61,7 +62,12 @@ const Events = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <>
+      <Helmet>
+        <title>Events | SAE TKMCE</title>
+        <meta name="description" content="Discover upcoming and past events organized by SAE TKMCE, including workshops, seminars, competitions, and meetings for engineering students." />
+      </Helmet>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 text-white py-20">
         <div className="absolute inset-0 opacity-20">
@@ -230,7 +236,8 @@ const Events = () => {
         )}
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 };
 
