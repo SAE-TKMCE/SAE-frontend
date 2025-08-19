@@ -46,16 +46,6 @@ const Home = () => {
       ),
     },
     {
-      name: 'HBAJA',
-      description: 'Hydrogen Baja SAE Team',
-      icon: (
-        <img 
-          src="/images/teams/BAJA_LW.png" 
-          alt="HBAJA" 
-        />
-      ),
-    },
-    {
       name: 'DRONA',
       description: 'Drona SAE Team',
       icon: (
@@ -361,7 +351,7 @@ const Home = () => {
 
                 {/* Team Logos - Positioned in Circle */}
                 {teams.map((team, index) => {
-                  const angle = (index * 51.43) - 90; // 360/7 = 51.43 degrees apart, start from top
+                  const angle = (index * 60) - 90; // 360/6 = 60 degrees apart, start from top
                   const radius = window.innerWidth < 768 ? 140 : 160; // Smaller radius on smaller screens
                   const x = Math.cos(angle * Math.PI / 180) * radius;
                   const y = Math.sin(angle * Math.PI / 180) * radius;

@@ -22,40 +22,12 @@ const Teams = () => {
       achievements: [
         'AIR 5 in the Design Event ',
         '3rd Rank in Kerala',
-        'AIR 7 in the Cost Event at the SAE 2025 competition held at NATRAX, Madhya Pradesh'
+        'AIR 7 in the Cost Event at the SAE 2025 competition'
       ],
-      
       projects: [
         'Hybrid Electric Prototype',
         'Fuel Cell Technology Research',
         'Solar Panel Integration Systems'
-      ]
-    },
-    {
-      name: 'HBAJA',
-      fullName: 'HYDROGEN Baja SAE Team',
-      description: 'Designing and building robust all-terrain vehicles for extreme off-road conditions and heavy-duty applications.',
-      icon: <img src="/images/teams/BAJA_LW.png"  alt="HBAJA" />,
-      color: 'from-red-400 to-red-600',
-      bgColor: 'bg-red-50',
-      textColor: 'text-red-600',
-      placeholder: <img src="/images/teams/baja.png"  alt="HBAJA" />,
-      activities: [
-        'All-Terrain Vehicle Design',
-        'Off-Road Racing',
-        'Heavy-Duty Suspension Systems',
-        'Durability Testing',
-        'Performance Optimization'
-      ],
-      achievements: [
-        'BAJA SAE India 2024 - 1st Place Design',
-        'Best Innovation Award 2023',
-        'Endurance Competition Winner 2023'
-      ],
-      projects: [
-        'Hydrogen Baja-XLR8 Vehicle',
-        'Advanced Suspension Systems',
-        'Roll Cage Design Optimization'
       ]
     },
     {
@@ -74,9 +46,7 @@ const Teams = () => {
         'Cost-Effective Solutions'
       ],
       achievements: [
-        'AIR 5 in the Design Event ',
-        '3rd Rank in Kerala',
-        'AIR 7 in the Cost Event at the SAE DRONA 2025 competition held at NATRAX, Madhya Pradesh'
+        '2024: AIR 1st for best innovative design category.'
       ],
       projects: [
         'Mini Baja Racing Vehicle',
@@ -100,10 +70,11 @@ const Teams = () => {
         'Engine Optimization',
         'Professional Racing'
       ],
-      achievements: [
-        'Formula SAE India 2024 - 3rd Place Overall',
-        'Best Presentation Award 2023',
-        'Technical Innovation Prize 2023'
+achievements: [
+        'AIR 12',
+        '3rd Rank in Kerala',
+        'AIR 5 in the Design Event',
+        'AIR 7 in the Cost Event'
       ],
       projects: [
         'Formula SAE Racing Car',
@@ -128,9 +99,10 @@ const Teams = () => {
         'Technical Excellence'
       ],
       achievements: [
-        'Formula Student Germany 2023 - Participation',
-        'Best Rookie Team Award 2023',
-        'Innovation Excellence 2023'
+        'AIR 16 in Formula Bharat 2022',
+        'AIR 31 in Formula Bharat 2023',
+        'AIR 15 in Formula Imperial 2023',
+        'AIR 19 in Formula Bharat 2024',
       ],
       projects: [
         'Formula Student Racing Car',
@@ -139,14 +111,14 @@ const Teams = () => {
       ]
     },
     {
-      name: 'Aerex',
+      name: 'AeroSAE',
       fullName: 'Fixed Wing UAV Team ',
       description: 'Designing and constructing next-generation fixed-wing UAVs.',
-      icon: <img src="/images/teams/Aerex-logo.png"  alt="Aerex" />,
+      icon: <img src="/images/teams/Aerex-logo.png"  alt="AeroSAE" />,
       color: 'from-yellow-400 to-yellow-600',
       bgColor: 'bg-yellow-50',
       textColor: 'text-yellow-600',
-      placeholder: <img src="/images/teams/Aerex.png"  alt="Aerex" />,
+      placeholder: <img src="/images/teams/Aerex.png"  alt="AeroSAE" />,
       activities: [
         'Design of UAVs',
         'Modular Assembly',
@@ -177,14 +149,11 @@ const Teams = () => {
         'Urban Mobility Research'
       ],
       achievements: [
-        'E-Bike Challenge 2024 - Top 5',
-        'Best Energy Efficiency Award 2023',
-        'Lightweight Design Recognition 2023'
+        'AIR 1 in the Best Dynamic Performance category at the SAE Bicycle Design Challenge',
       ],
       projects: [
         'City Commuter E-Bike Prototype',
         'Advanced BMS for E-Bicycles',
-        'Regenerative Braking Integration'
       ]
     }
   ];
@@ -192,8 +161,8 @@ const Teams = () => {
   return (
     <>
       <Helmet>
-        <title>Teams | SAE TKMCE</title>
-        <meta name="description" content="Meet the SAE TKMCE teams: VEGHA, HBAJA, SPOX, and more. Learn about our projects, achievements, and engineering focus areas." />
+  <title>Teams | SAE TKMCE</title>
+  <meta name="description" content="Meet the SAE TKMCE teams: VEGHA, DRONA, XLR8 Racing, XLR8FST, Aerex, SPOX, and more. Learn about our projects, achievements, and engineering focus areas." />
       </Helmet>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Hero Section */}
@@ -221,13 +190,13 @@ const Teams = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8">
-              Seven Specialized Teams • Engineering Excellence • Innovation in Motion
+              Six Specialized Teams • Engineering Excellence • Innovation in Motion
             </p>
             
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                <div className="text-3xl font-bold text-yellow-400">7</div>
+                <div className="text-3xl font-bold text-yellow-400">6</div>
                 <div className="text-sm text-blue-100">Active Teams</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
