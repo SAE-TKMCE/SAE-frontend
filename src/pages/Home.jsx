@@ -1,31 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContextMock';
 import { eventsService } from '../services/events';
+import TeamHighlightsCarousel from '../components/TeamHighlightsCarousel';
+import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 
 const Home = () => {
-  const { user } = useAuth();
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [carouselBgOpacity, setCarouselBgOpacity] = useState(1);
+  const [carouselFontColor, setCarouselFontColor] = useState('#111827'); // Start with gray-900
+  const [selectedAchievement, setSelectedAchievement] = useState(null);
+  const [teamPositions, setTeamPositions] = useState([]);
+  const carouselSectionRef = useRef(null);
+  const vantaRef = useRef(null);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const events = await eventsService.getEvents();
-        // Get the next 3 upcoming events
-        const upcoming = events.slice(0, 3);
-        setUpcomingEvents(upcoming);
-      } catch (error) {
-        console.error('Error fetching events:', error);
-        // Don't throw error for unauthenticated requests on Home page
-        // Just show empty events or default content
-        setUpcomingEvents([]);
-      } finally {
+    // Fetch events
+    setLoading(true);
+    eventsService.getEvents()
+      .then((events) => {
+        setUpcomingEvents(events);
         setLoading(false);
-      }
-    };
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-    fetchEvents();
+  // Scroll-based background transition for carousel section
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!carouselSectionRef.current) return;
+      const section = carouselSectionRef.current;
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      // Calculate progress through the section
+      let progress = 0;
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        // Section is in viewport
+        // Accelerate the transition so gray-900 fills by halfway through the section
+        let rawProgress = (windowHeight - rect.top) / (rect.height + windowHeight);
+        let adjustedProgress = Math.min(1, Math.max(0, rawProgress * 2)); // x2: fill by halfway
+        progress = adjustedProgress;
+      } else if (rect.top >= windowHeight) {
+        // Before section
+        progress = 0;
+      } else {
+        // After section
+        progress = 0;
+      }
+  setCarouselBgOpacity(progress);
+  // Interpolate font color from dark to white
+  const r = Math.round(17 * progress + 255 * (1 - progress));
+  const g = Math.round(24 * progress + 255 * (1 - progress));
+  const b = Math.round(39 * progress + 255 * (1 - progress));
+  // If progress > 0.5, switch to white font, else dark
+  const fontColor = progress > 0.5 ? '#fff' : `rgb(${r},${g},${b})`;
+  setCarouselFontColor(fontColor);
+    };
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleRegistrationClick = () => {
@@ -116,7 +149,7 @@ const Home = () => {
     {
       team: 'VEGHA',
       title: 'TWO Wheeler Design Competition',
-      position: 'AIR 6 | KERALA 2',
+      position: 'AIR 2',
       year: '2025',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
@@ -140,7 +173,7 @@ const Home = () => {
       )
     },
     {
-      team: 'MOBILE APP DEVELOPMENT',
+      team: 'AeroSAE',
       title: 'SAEINDIA SOUTHERN SECTION STUDENT CONVENTION',
       position: '1st Place',
       year: '2025',
@@ -151,6 +184,86 @@ const Home = () => {
       )
     }
   ];
+
+  
+  const achievementDetails = {
+    'XLR8 Racing': {
+      members: [],
+      prize: '',
+      expense: '',
+    },
+    'VEGHA': {
+      members: [],
+      prize: '',
+      expense: '',
+    },
+    'HBAJA': {
+      members: [],
+      prize: '',
+      expense: '',
+    },
+    'MOBILE APP DEVELOPMENT': {
+      
+    },
+  };
+
+  useEffect(() => {
+    let vantaEffect;
+    const loadVanta = async () => {
+      if (window.VANTA) {
+        vantaEffect = window.VANTA.DOTS({
+          el: vantaRef.current,
+          mouseControls: true,
+          touchControls: true,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          scale: 1.0,
+          scaleMobile: 1.0,
+          color: 0xffffff,
+          backgroundColor: 0x111111,
+        });
+      }
+    };
+    // Load Vanta.js and three.js from CDN if not already loaded
+    if (!window.VANTA) {
+      const scriptThree = document.createElement('script');
+      scriptThree.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js';
+      scriptThree.async = true;
+      document.body.appendChild(scriptThree);
+      scriptThree.onload = () => {
+        const scriptVanta = document.createElement('script');
+        scriptVanta.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js';
+        scriptVanta.async = true;
+        document.body.appendChild(scriptVanta);
+        scriptVanta.onload = loadVanta;
+      };
+    } else {
+      loadVanta();
+    }
+    return () => {
+      if (vantaEffect && typeof vantaEffect.destroy === 'function') {
+        vantaEffect.destroy();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Initial positions
+    setTeamPositions(Array.from({ length: teams.length }, (_, i) => i));
+    // Interval to shuffle positions
+    const interval = setInterval(() => {
+      setTeamPositions(prev => {
+        // Fisher-Yates shuffle
+        const arr = [...prev];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      });
+    }, 2000); // Swap every 2 seconds
+    return () => clearInterval(interval);
+  }, [teams.length]);
 
   return (
     <div className="min-h-screen">
@@ -233,12 +346,21 @@ const Home = () => {
           <img 
             src="/images/formula-car.png" 
             alt="Formula Racing Car"
-            className="w-auto h-32 scale-150 sm:h-40 md:h-56 lg:h-48 xl:h-52 2xl:h-56 sm:scale-150 md:scale-175 lg:scale-150 xl:scale-140 object-contain opacity-75 sm:opacity-85 md:opacity-90 lg:opacity-95"
+            className="w-auto h-32 scale-150 sm:h-40 md:h-56 lg:h-48 xl:h-52 2xl:h-56 sm:scale-150 md:scale-175 lg:scale-150 xl:scale-140 object-contain opacity-75 sm:opacity-85 md:opacity-90 lg:opacity-95 hero-car-img"
             style={{
               filter: 'drop-shadow(0 8px 25px rgba(0,0,0,0.6)) drop-shadow(0 0 15px rgba(59,130,246,0.4))'
             }}
           />
         </div>
+        <style>{`
+          @media only screen and (max-width: 600px) and (min-height: 900px) {
+            .hero-car-img {
+              height: 220px !important;
+              scale: 1.85 !important;
+              opacity: 0.95 !important;
+            }
+          }
+        `}</style>
             <div className="absolute sm:relative bottom-4 sm:bottom-[-3rem]  left-4 right-4 sm:left-auto sm:right-auto hero-buttons" style={{ zIndex: 9999 }}>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-center items-center">
                 <button
@@ -330,14 +452,14 @@ const Home = () => {
             </h2>
           </div>
           
-          {/* Desktop and Tablet Circular Layout */}
-          <div className="hidden sm:block">
+          {/* Desktop and Tablet Circular Layout - now always visible */}
+          <div className="block">
             <div className="relative w-full max-w-4xl mx-auto">
               <div className="relative aspect-square max-w-2xl mx-auto">
                 
                 {/* Central SAE Logo */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                  <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 bg-transparent  rounded-full  flex items-center justify-center hover:scale-105 transition-all duration-300">
+                  <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-40 lg:h-40 bg-transparent rounded-full flex items-center justify-center hover:scale-105 transition-all duration-300">
                     <div className="text-center">
                       <div className="text-blue-600 font-black text-2xl sm:text-3xl lg:text-4xl tracking-wider mb-1">
                         <img
@@ -349,28 +471,27 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Team Logos - Positioned in Circle */}
-                {teams.map((team, index) => {
+                {/* Team Logos - Positioned in Circle with animated swap */}
+                {teamPositions.map((teamIdx, index) => {
                   const angle = (index * 60) - 90; // 360/6 = 60 degrees apart, start from top
-                  const radius = window.innerWidth < 768 ? 140 : 160; // Smaller radius on smaller screens
+                  const radius = window.innerWidth < 500 ? 120 : window.innerWidth < 768 ? 140 : 160;
                   const x = Math.cos(angle * Math.PI / 180) * radius;
                   const y = Math.sin(angle * Math.PI / 180) * radius;
-                  
+                  const team = teams[teamIdx];
                   return (
-                    <div key={index} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
-                         style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}>
-                      
+                    <div
+                      key={teamIdx}
+                      className="absolute top-1/2 left-1/2 team-logo-anim"
+                      style={{
+                        transition: 'transform 0.8s cubic-bezier(0.4,0,0.2,1)',
+                        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                        zIndex: 10,
+                      }}
+                    >
                       {/* Team Logo Circle */}
-                      <div className={`w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20  ${team.color} hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center group`}>
-                        <div className="text-white scale-75 sm:scale-85 lg:scale-90 group-hover:scale-100 transition-transform duration-300">
+                      <div className={`w-20 h-20 sm:w-20 sm:h-20 lg:w-20 lg:h-20  ${team.color} hover:shadow-xl transition-all duration-300 hover:scale-110 cursor-pointer flex items-center justify-center group`}>
+                        <div className="text-white scale-90 sm:scale-90 lg:scale-90 group-hover:scale-100 transition-transform duration-300">
                           {team.icon}
-                        </div>
-                        
-                        {/* Team Name on Hover */}
-                        <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
-                          <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                            {team.name}
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -379,82 +500,152 @@ const Home = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Mobile Layout - Vertical Stack */}
-          <div className="block sm:hidden">
-            <div className="flex flex-col items-center space-y-6">
-              
-              {/* Central SAE Logo - Mobile */}
-              <div className="w-24 h-24 bg-transparent items-center justify-center">
-                <div className="text-center">
-                  <div className="text-blue-600 font-black text-xl tracking-wider mb-0.5">
-                    <img src="/logo.png" alt="SAE TKMCE Logo"  />
-                  </div>
-                </div>
-              </div>
-
-              {/* Team Logos Grid - Mobile */}
-              <div className="grid grid-cols-3 gap-4 max-w-xs mx-auto">
-                {teams.slice(0, 6).map((team, index) => (
-                  <div key={index} className="flex flex-col items-center">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${team.color} rounded-full shadow-lg flex items-center justify-center mb-2`}>
-                      <div className="text-white scale-75">
-                        {team.icon}
-                      </div>
-                    </div>
-                    <span className="text-xs font-medium text-gray-700 text-center">
-                      {team.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* 7th Team - Centered below */}
-              {teams.length > 6 && (
-                <div className="flex flex-col items-center">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${teams[6].color} rounded-full shadow-lg flex items-center justify-center mb-2`}>
-                    <div className="text-white scale-75">
-                      {teams[6].icon}
-                    </div>
-                  </div>
-                  <span className="text-xs font-medium text-gray-700 text-center">
-                    {teams[6].name}
-                  </span>
-                </div>
-              )}
-            </div>
+      {/* Team Highlights Carousel */}
+      <section ref={carouselSectionRef} className="py-8 bg-white relative">
+        {/* Fading gray-900 background layer */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            backgroundColor: `rgb(
+              ${Math.round(255 * (1 - carouselBgOpacity) + 17 * carouselBgOpacity)},
+              ${Math.round(255 * (1 - carouselBgOpacity) + 24 * carouselBgOpacity)},
+              ${Math.round(255 * (1 - carouselBgOpacity) + 39 * carouselBgOpacity)}
+            )`,
+            transition: 'background-color 0.4s',
+          }}
+        ></div>
+        {/* Light Checkered Background Pattern */}
+        <div className="absolute inset-0 opacity-60 pointer-events-none z-0">
+          <div className="w-full h-full" style={{
+            backgroundImage: `
+              repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 40px,
+                rgba(59, 130, 246, 0.08) 40px,
+                rgba(59, 130, 246, 0.08) 41px
+              ),
+              repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 40px,
+                rgba(59, 130, 246, 0.08) 40px,
+                rgba(59, 130, 246, 0.08) 41px
+              )
+            `
+          }}></div>
+        </div>
+        
+        <div
+          className="w-full max-w-full lg:max-w-2xl xl:max-w-sm mx-auto px-0 relative z-10"
+          style={{ color: carouselFontColor, transition: 'color 0.4s' }}
+        >
+          <h2 className="text-2xl font-bold text-center mb-6 pt-56">Team Highlights</h2>
+          <div
+            style={{ borderRadius: 12, overflow: 'hidden', width: '100%', maxWidth: '100vw', margin: '0 auto', paddingBottom: '45.25%' }}
+            className="w-full h-auto lg:aspect-[9/16]"
+          >
+            <TeamHighlightsCarousel />
           </div>
         </div>
       </section>
 
       {/* Achievements Section */}
-      <section className="py-16 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Recent Achievements</h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Excellence in competition drives our passion for innovation
-            </p>
+      <section className="py-16 bg-gray-900 text-white relative overflow-hidden">
+        {/* Vanta.js Dots background */}
+        <div ref={vantaRef} className="absolute inset-0 w-full h-full z-0" style={{ minHeight: '100%', minWidth: '100%' }}></div>
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>
+        <div className="relative z-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Recent Achievements</h2>
+              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                Excellence in competition drives our passion for innovation
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {achievements.map((achievement, index) => (
+                <div 
+                  key={index}
+                  className="relative rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 overflow-hidden cursor-pointer"
+                  style={{
+                    backgroundImage: `url(/images/achievements/${achievement.team.replace(/\s+/g, '').toLowerCase()}.jpg)`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    minHeight: '220px',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
+                  onClick={() => setSelectedAchievement(achievement)}
+                >
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="relative z-10 p-6 w-full text-center">
+                    
+                    <p className="text-lg font-semibold text-yellow-400 drop-shadow-lg">{achievement.position}</p>
+                  </div>
+                  <div className="absolute bottom-3 right-3 z-20">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-lg">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {achievements.map((achievement, index) => (
-              <div 
-                key={index}
-                className="bg-gradient-to-br from-gray-800 to-gray-700 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <div className="text-center">
-                  <div className="flex justify-center mb-4">{achievement.icon}</div>
-                  <h3 className="text-lg font-bold mb-2 text-yellow-400">{achievement.team}</h3>
-                  <p className="text-sm text-gray-300 mb-2">{achievement.title}</p>
-                  <p className="text-lg font-semibold text-green-400">{achievement.position}</p>
-                  <p className="text-xs text-gray-400">{achievement.year}</p>
+          {/* Modal for expanded achievement */}
+          {selectedAchievement && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-500" onClick={() => setSelectedAchievement(null)}>
+              <div
+                className="relative bg-white/90 rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4 flex flex-col items-center"
+                style={{
+                  backgroundImage: `url(/images/achievements/${selectedAchievement.team.replace(/\s+/g, '').toLowerCase()}.jpg)`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  filter: 'blur(8px)',
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  opacity: 0.3,
+                }}
+              ></div>
+              <div className="relative z-10 bg-black/70 rounded-2xl p-8 max-w-lg w-full mx-4 flex flex-col items-center text-white transition-all duration-500 transform scale-95 opacity-0 animate-modalIn">
+                <button className="absolute top-4 right-4 text-white text-2xl" onClick={e => {e.stopPropagation(); setSelectedAchievement(null);}}>&times;</button>
+                <h2 className="text-2xl font-bold mb-2 text-yellow-400">{selectedAchievement.team}</h2>
+                <h3 className="text-lg font-semibold mb-2">{selectedAchievement.title}</h3>
+                <p className="text-lg mb-4">{selectedAchievement.position}</p>
+                <div className="mb-2">
+                  <span className="font-bold">Team Members:</span>
+                  <ul className="list-disc list-inside">
+                    {(achievementDetails[selectedAchievement.team]?.members || []).map((member, i) => (
+                      <li key={i}>{member}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="mb-2">
+                  <span className="font-bold">Prize:</span> {achievementDetails[selectedAchievement.team]?.prize}
+                </div>
+                <div className="mb-2">
+                  <span className="font-bold">Project Expense:</span> {achievementDetails[selectedAchievement.team]?.expense}
                 </div>
               </div>
-            ))}
-          </div>
+              <style>{`
+                @keyframes modalIn {
+                  0% { opacity: 0; transform: scale(0.8); }
+                  100% { opacity: 1; transform: scale(1); }
+                }
+                .animate-modalIn {
+                  animation: modalIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+                }
+              `}</style>
+            </div>
+          )}
         </div>
       </section>
 
@@ -467,99 +658,13 @@ const Home = () => {
               Join us in our upcoming events and competitions
             </p>
           </div>
-          
           {loading ? (
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
               <p className="mt-4 text-gray-600">Loading events...</p>
             </div>
           ) : upcomingEvents.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upcomingEvents.map((event) => (
-                <div 
-                  key={event.id}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
-                  data-aos="fade-up"
-                >
-                  {/* Event Image */}
-                  <div className="h-48 bg-gradient-to-r from-blue-500 to-purple-600 relative overflow-hidden">
-                    {event.image_url || event.image ? (
-                      <img
-                        src={event.image_url || event.image}
-                        alt={event.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🎉</div>
-                          <p className="text-sm opacity-80">Event Image</p>
-                        </div>
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-white/90 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-                        {event.event_type}
-                      </span>
-                    </div>
-                    <div className="absolute top-4 right-4">
-                      <span className="bg-white/90 text-gray-700 text-xs font-medium px-2.5 py-1 rounded-full">
-                        {new Date(event.date).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Event Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{event.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{event.description}</p>
-                    
-                    {/* Event Details */}
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <span className="w-5">📍</span>
-                        <span>{event.venue}</span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <span className="w-5">⏰</span>
-                        <span>{new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                      </div>
-                      {event.host && (
-                        <div className="flex items-center text-sm text-gray-500">
-                          <span className="w-5">�</span>
-                          <span>Host: {event.host}</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm">
-                        {user?.membership_status === 'approved' ? (
-                          <div className="flex items-center space-x-2">
-                            <span className="text-gray-400 line-through">₹{event.registration_fee}</span>
-                            <span className="text-green-600 font-semibold">₹{event.member_fee}</span>
-                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Member Price</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center space-x-2">
-                            <span className="text-gray-700 font-medium">₹{event.registration_fee}</span>
-                            {event.member_fee < event.registration_fee && (
-                              <span className="text-xs text-blue-600">₹{event.member_fee} for members</span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <Link
-                        to={`/events/${event.id}`}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition duration-300"
-                      >
-                        Learn More
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <UpcomingEventsCarousel events={upcomingEvents} />
           ) : (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">📅</div>

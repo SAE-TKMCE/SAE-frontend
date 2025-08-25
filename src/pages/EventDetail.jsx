@@ -60,9 +60,9 @@ const EventDetail = () => {
   ];
 
   return (
-    <>
+    <React.Fragment>
       <style>{styles}</style>
-      <div className="min-h-screen bg-gray-900 text-gray-100 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white pt-12">
         {/* Subtle moving grid */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div
@@ -78,7 +78,7 @@ const EventDetail = () => {
           />
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative">
+  <div className="flex justify-center items-center min-h-screen py-10 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
           {/* Radial spotlight behind the card to make it pop */}
           <div
             aria-hidden
@@ -93,12 +93,10 @@ const EventDetail = () => {
           </div>
 
           {/* Notebook-style card */}
-          <div className="relative z-10 bg-gray-800/80 backdrop-blur-xl border border-white/10 ring-1 ring-white/10 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              {/* Left: Image Pane */}
-              <div className="relative h-64 md:h-full bg-gray-900">
+          <div className="relative z-10 bg-gray-800/80 backdrop-blur-xl border border-white/10 ring-1 ring-white/10 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden flex flex-col md:flex-row items-center" style={{ width: '340px', maxWidth: '90vw' }}>
+            <div className="relative aspect-[3/4] bg-gray-900" style={{ width: '220px', height: '294px', minWidth: '140px', maxWidth: '220px' }}>
                 {event.image ? (
-                  <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+                  <img src={event.image} alt={event.title} className="w-full h-full object-cover rounded-2xl" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-500">No image</div>
                 )}
@@ -156,9 +154,11 @@ const EventDetail = () => {
               </div>
             </div>
           </div>
-        </div>
+
+          
+          
       </div>
-    </>
+    </React.Fragment>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import VideoLoader from '../../components/VideoLoader';
 import api from '../../services/api';
 
 const ExecomManagement = () => {
@@ -29,36 +30,26 @@ const ExecomManagement = () => {
     'Faculty Advisor'
   ];
 
+  const fetchExecomMembers = async () => {
+    setLoading(true);
+    const cached = sessionStorage.getItem('execomMembers');
+    if (cached) {
+      setExecomMembers(JSON.parse(cached));
+      setLoading(false);
+    } else {
+      try {
+        const response = await api.get('/achievements/execom-members/');
+        setExecomMembers(response.data);
+        sessionStorage.setItem('execomMembers', JSON.stringify(response.data));
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchExecomMembers();
   }, []);
-
-  const fetchExecomMembers = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/achievements/execom-members/');
-      // Transform API data to match component's expected structure
-      const transformedData = response.data.map(member => ({
-        id: member.id,
-        name: member.full_name,
-        position: member.position,
-        email: member.user?.email || 'No email',
-        phone: 'Contact via admin',
-        year: 'Current Member',
-        department: member.department,
-        achievements: member.bio || 'Active SAE member',
-        image: member.image || '/images/placeholders/member-placeholder.jpg',
-        order: member.order || 1
-      }));
-      setExecomMembers(transformedData);
-    } catch (error) {
-      console.error('Error fetching execom members:', error);
-      // Fallback to empty array or show error message
-      setExecomMembers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -129,11 +120,7 @@ const ExecomManagement = () => {
   }).sort((a, b) => a.order - b.order);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
+    return <VideoLoader />;
   }
 
   return (

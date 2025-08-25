@@ -1,6 +1,153 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
+function TeamsCarousel({ teams }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [cardIndex, setCardIndex] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
+  const [direction, setDirection] = useState('down');
+
+  const handleNextTeam = () => {
+    setDirection('down');
+    setTransitioning(true);
+    setTimeout(() => {
+      setActiveIndex((activeIndex + 1) % teams.length);
+      setTransitioning(false);
+      setCardIndex(0);
+    }, 350);
+  };
+  const handlePrevTeam = () => {
+    setDirection('up');
+    setTransitioning(true);
+    setTimeout(() => {
+      setActiveIndex((activeIndex - 1 + teams.length) % teams.length);
+      setTransitioning(false);
+      setCardIndex(0);
+    }, 350);
+  };
+  const handleNextCard = () => {
+    setCardIndex(1);
+  };
+  const handlePrevCard = () => {
+    setCardIndex(0);
+  };
+
+  const team = teams[activeIndex];
+  const cardViews = [
+    // Main Info Card
+    (
+      <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center transition-all duration-300 ${transitioning && direction==='down' ? 'translate-y-32 opacity-0' : 'translate-y-0 opacity-100'} ${transitioning && direction==='up' ? '-translate-y-32 opacity-0' : ''}`}>
+        {/* Team Info */}
+        <div>
+          <div className="flex items-center mb-4">
+            <div className="text-6xl mr-4">{team.icon}</div>
+            <div>
+              <h2 className={`text-3xl font-bold ${team.textColor}`}>{team.name}</h2>
+              <p className="text-gray-600 font-medium">{team.fullName}</p>
+            </div>
+          </div>
+          <p className="text-gray-700 text-lg mb-6">{team.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {team.activities.slice(0, 3).map((activity, idx) => (
+              <span key={idx} className={`px-3 py-1 rounded-full text-sm font-medium ${team.textColor} bg-white`}>{activity}</span>
+            ))}
+          </div>
+        </div>
+        {/* Team Image Placeholder */}
+        <div className="bg-white rounded-xl p-8 shadow-lg">
+          <div className="h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+            <div className="w-full h-full">
+              {team.placeholder && (
+                <img src={team.placeholder.props.src} alt={team.placeholder.props.alt} className="w-full h-full object-cover" />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    // Activities/Achievements/Projects Grid
+    (
+      <div className={`p-4 transition-all duration-300`}>
+        <h3 className={`text-2xl font-bold mb-4 ${team.textColor}`}>Activities</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {team.activities.map((activity, idx) => (
+            <div key={idx} className="bg-white rounded-lg p-4 shadow text-gray-700 font-medium">{activity}</div>
+          ))}
+        </div>
+        <h3 className={`text-2xl font-bold mb-4 ${team.textColor}`}>Achievements</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {team.achievements.map((ach, idx) => (
+            <div key={idx} className="bg-white rounded-lg p-4 shadow text-gray-700 font-medium">{ach}</div>
+          ))}
+        </div>
+        <h3 className={`text-2xl font-bold mb-4 ${team.textColor}`}>Projects</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {team.projects.map((proj, idx) => (
+            <div key={idx} className="bg-white rounded-lg p-4 shadow text-gray-700 font-medium">{proj}</div>
+          ))}
+        </div>
+      </div>
+    )
+  ];
+  return (
+    <div className={`${team.bgColor} rounded-2xl overflow-hidden shadow-xl relative`}>
+      <div className="p-8 lg:p-12">
+        {cardViews[cardIndex]}
+        {/* Arrow Button for Next/Prev Card */}
+        {cardIndex === 0 && (
+          <button
+            className="absolute bottom-6 right-6 bg-blue-600 text-white rounded-full p-3 shadow-lg hover:bg-blue-700 transition"
+            onClick={handleNextCard}
+            aria-label="Next"
+            disabled={transitioning}
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        )}
+        {cardIndex === 1 && (
+          <button
+            className="absolute bottom-6 left-6 bg-gray-300 text-blue-600 rounded-full p-3 shadow-lg hover:bg-gray-400 transition"
+            onClick={handlePrevCard}
+            aria-label="Back"
+            disabled={transitioning}
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
+        )}
+        {/* Up/Down Arrow Buttons for Carousel */}
+        {cardIndex === 0 && (
+          <>
+            <button
+              className="absolute top-6 left-1/2 transform -translate-x-1/2 bg-gray-300 text-blue-600 rounded-full p-3 shadow-lg hover:bg-gray-400 transition"
+              onClick={handlePrevTeam}
+              aria-label="Prev Team"
+              disabled={transitioning}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+            </button>
+            <button
+              className="absolute bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-300 text-blue-600 rounded-full p-3 shadow-lg hover:bg-gray-400 transition"
+              onClick={handleNextTeam}
+              aria-label="Next Team"
+              disabled={transitioning}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v14M19 12l-7 7-7-7" />
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 const Teams = () => {
   const teams = [
@@ -22,14 +169,16 @@ const Teams = () => {
       achievements: [
         'AIR 5 in the Design Event ',
         '3rd Rank in Kerala',
-        'AIR 7 in the Cost Event at the SAE 2025 competition'
+        'AIR 7 in the Cost Event at the SAE 2025 competition held at NATRAX, Madhya Pradesh'
       ],
+      
       projects: [
         'Hybrid Electric Prototype',
         'Fuel Cell Technology Research',
         'Solar Panel Integration Systems'
       ]
     },
+    
     {
       name: 'DRONA',
       fullName: 'DRONA SAE Team',
@@ -46,7 +195,9 @@ const Teams = () => {
         'Cost-Effective Solutions'
       ],
       achievements: [
-        '2024: AIR 1st for best innovative design category.'
+        'AIR 5 in the Design Event ',
+        '3rd Rank in Kerala',
+        'AIR 7 in the Cost Event at the SAE DRONA 2025 competition held at NATRAX, Madhya Pradesh'
       ],
       projects: [
         'Mini Baja Racing Vehicle',
@@ -70,11 +221,10 @@ const Teams = () => {
         'Engine Optimization',
         'Professional Racing'
       ],
-achievements: [
-        'AIR 12',
-        '3rd Rank in Kerala',
-        'AIR 5 in the Design Event',
-        'AIR 7 in the Cost Event'
+      achievements: [
+        'Formula SAE India 2024 - 3rd Place Overall',
+        'Best Presentation Award 2023',
+        'Technical Innovation Prize 2023'
       ],
       projects: [
         'Formula SAE Racing Car',
@@ -99,10 +249,9 @@ achievements: [
         'Technical Excellence'
       ],
       achievements: [
-        'AIR 16 in Formula Bharat 2022',
-        'AIR 31 in Formula Bharat 2023',
-        'AIR 15 in Formula Imperial 2023',
-        'AIR 19 in Formula Bharat 2024',
+        'Formula Student Germany 2023 - Participation',
+        'Best Rookie Team Award 2023',
+        'Innovation Excellence 2023'
       ],
       projects: [
         'Formula Student Racing Car',
@@ -111,14 +260,14 @@ achievements: [
       ]
     },
     {
-      name: 'AeroSAE',
+      name: 'Aerex',
       fullName: 'Fixed Wing UAV Team ',
       description: 'Designing and constructing next-generation fixed-wing UAVs.',
-      icon: <img src="/images/teams/Aerex-logo.png"  alt="AeroSAE" />,
+      icon: <img src="/images/teams/Aerex-logo.png"  alt="Aerex" />,
       color: 'from-yellow-400 to-yellow-600',
       bgColor: 'bg-yellow-50',
       textColor: 'text-yellow-600',
-      placeholder: <img src="/images/teams/Aerex.png"  alt="AeroSAE" />,
+      placeholder: <img src="/images/teams/Aerex.png"  alt="Aerex" />,
       activities: [
         'Design of UAVs',
         'Modular Assembly',
@@ -149,22 +298,20 @@ achievements: [
         'Urban Mobility Research'
       ],
       achievements: [
-        'AIR 1 in the Best Dynamic Performance category at the SAE Bicycle Design Challenge',
+        'E-Bike Challenge 2024 - Top 5',
+        'Best Energy Efficiency Award 2023',
+        'Lightweight Design Recognition 2023'
       ],
       projects: [
         'City Commuter E-Bike Prototype',
         'Advanced BMS for E-Bicycles',
+        'Regenerative Braking Integration'
       ]
     }
   ];
 
   return (
-    <>
-      <Helmet>
-  <title>Teams | SAE TKMCE</title>
-  <meta name="description" content="Meet the SAE TKMCE teams: VEGHA, DRONA, XLR8 Racing, XLR8FST, Aerex, SPOX, and more. Learn about our projects, achievements, and engineering focus areas." />
-      </Helmet>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 text-white py-20">
         <div className="absolute inset-0 opacity-20">
@@ -220,111 +367,7 @@ achievements: [
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12">
-            {teams.map((team, index) => (
-              <div 
-                key={team.name}
-                className={`${team.bgColor} rounded-2xl overflow-hidden shadow-xl`}
-              >
-                <div className="p-8 lg:p-12">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    {/* Team Info */}
-                    <div>
-                      <div className="flex items-center mb-4">
-                        <div className="text-6xl mr-4">{team.icon}</div>
-                        <div>
-                          <h2 className={`text-3xl font-bold ${team.textColor}`}>
-                            {team.name}
-                          </h2>
-                          <p className="text-gray-600 font-medium">
-                            {team.fullName}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <p className="text-gray-700 text-lg mb-6">
-                        {team.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        {team.activities.slice(0, 3).map((activity, idx) => (
-                          <span 
-                            key={idx}
-                            className={`px-3 py-1 rounded-full text-sm font-medium ${team.textColor} bg-white`}
-                          >
-                            {activity}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Team Image Placeholder */}
-                    <div className="bg-white rounded-xl p-8 shadow-lg">
-                      <div className="h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                        <div className="w-full h-full">
-                          {team.placeholder && (
-                            <img 
-                              src={team.placeholder.props.src} 
-                              alt={team.placeholder.props.alt}
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                        </div>
-                      
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Detailed Information */}
-                  <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Activities */}
-                    <div className="bg-white rounded-lg p-6 shadow-md">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        🎯 Activities
-                      </h3>
-                      <ul className="space-y-2">
-                        {team.activities.map((activity, idx) => (
-                          <li key={idx} className="flex items-center text-sm text-gray-600">
-                            <span className={`w-2 h-2 rounded-full mr-2 ${team.textColor.replace('text-', 'bg-')}`}></span>
-                            {activity}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    {/* Achievements */}
-                    <div className="bg-white rounded-lg p-6 shadow-md">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        🏆 Achievements
-                      </h3>
-                      <ul className="space-y-2">
-                        {team.achievements.map((achievement, idx) => (
-                          <li key={idx} className="flex items-start text-sm text-gray-600">
-                            <span className="text-yellow-500 mr-2">★</span>
-                            {achievement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    {/* Projects */}
-                    <div className="bg-white rounded-lg p-6 shadow-md">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        🚀 Current Projects
-                      </h3>
-                      <ul className="space-y-2">
-                        {team.projects.map((project, idx) => (
-                          <li key={idx} className="flex items-start text-sm text-gray-600">
-                            <span className="text-blue-500 mr-2">▸</span>
-                            {project}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-           
-            ))}
+            <TeamsCarousel teams={teams} />
           </div>
         </div>
       </section>
@@ -354,8 +397,7 @@ achievements: [
           </div>
         </div>
       </section>
-      </div>
-    </>
+    </div>
   );
 };
 

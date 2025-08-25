@@ -38,46 +38,52 @@ const Navbar = () => {
   };
 
   const handleNavClick = (path) => {
-    setIsMenuOpen(false);
-    navigate(path);
+  setIsMenuOpen(false);
+  navigate(path);
+};
+
+useEffect(() => {
+  const closeMenu = (e) => {
+    // Close menu if clicking outside of menu and menu button
+    if (isMenuOpen && 
+        !e.target.closest('.mobile-menu') && 
+        !e.target.closest('.menu-button')) {
+      setIsMenuOpen(false);
+    }
   };
 
-  const handleMenuToggle = () => {
-    setIsMenuOpen(prevState => !prevState);
-  };
-  
+  document.addEventListener('click', closeMenu);
+  return () => document.removeEventListener('click', closeMenu);
+}, [isMenuOpen]);
   return (
-  <>
-      {/* Main Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        showNavbar ? 'translate-y-0' : '-translate-y-full'
-      } ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20' 
-          : 'bg-transparent'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative">
-            {/* Main navbar content */}
-            <div className="flex justify-between items-center h-16">
-              {/* Logo Section - Centered on mobile, left-aligned on desktop */}
-              <div className="flex items-center flex-1 md:flex-none justify-center md:justify-start">
-                <Link to="/" className="flex-shrink-0 flex items-center">
-                  <img
-                    src={isScrolled ? '/logo.png' : '/SAE.png'}
-                    alt="SAE TKMCE"
-                    className="h-8 w-auto object-contain transition-opacity duration-300"
-                    height={32}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = '/SAE.png';
-                    }}
-                  />
-                </Link>
-              </div>
-          
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+    
+    
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      showNavbar ? 'translate-y-0' : '-translate-y-full'
+    } ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20' 
+        : 'bg-transparent'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex-1 flex items-center justify-center md:justify-start">
+            <Link to="/" className="flex-shrink-0 flex items-center">
+              <img
+                src={isScrolled ? '/logo.png' : '/SAE.png'}
+                alt="SAE TKMCE"
+                className="h-8 w-auto object-contain transition-opacity duration-300"
+                height={32}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/SAE.png';
+                }}
+              />
+            </Link>
+          </div>
+            
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
               isScrolled 
                 ? 'text-gray-700 hover:text-blue-600' 
@@ -164,99 +170,80 @@ const Navbar = () => {
                 >
                   Register
                 </Link>
+                
               </div>
+              
             )}
           </div>
-        </div>
-      </div>
-    </div>
-    </nav>
-
-    {/* Hamburger Menu Button - Completely Outside Nav */}
-    <div 
-      className={`fixed top-0 right-4 z-[60] md:hidden transition-all duration-300 ${
-        showNavbar ? 'translate-y-0' : '-translate-y-full'
-      }`}
-    >
-      <div className="h-16 flex items-center">
-        <div
-          id="mobile-menu-button"
-          onClick={handleMenuToggle}
-          className="menu-button inline-flex items-center justify-center p-2 rounded-md focus:outline-none cursor-pointer transition-colors duration-200 hover:bg-white/10"
-          role="button"
-          tabIndex={0}
-          aria-label="Main menu"
-          aria-expanded={isMenuOpen}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleMenuToggle();
-            }
-          }}
-        >
-          <span className="sr-only">Open main menu</span>
-          <div className="w-6 h-6 relative pointer-events-none">
-            <span className={`absolute left-0 w-6 h-0.5 transform transition-all duration-300 ease-in-out ${
-              isScrolled ? 'bg-gray-600' : 'bg-white'
-            } ${
-              isMenuOpen ? 'rotate-45 translate-y-2.5' : 'translate-y-1'
-            }`} />
-            <span className={`absolute left-0 w-6 h-0.5 transform transition-all duration-300 ease-in-out ${
-              isScrolled ? 'bg-gray-600' : 'bg-white'
-            } ${
-              isMenuOpen ? 'opacity-0' : 'translate-y-3'
-            }`} />
-            <span className={`absolute left-0 w-6 h-0.5 transform transition-all duration-300 ease-in-out ${
-              isScrolled ? 'bg-gray-600' : 'bg-white'
-            } ${
-              isMenuOpen ? '-rotate-45 translate-y-2.5' : 'translate-y-5'
-            }`} />
           </div>
         </div>
-      </div>
-    </div>
 
-    {/* Mobile menu - Also outside nav */}
-    <div 
-      className={`md:hidden fixed inset-x-0 top-16 z-[55] transition-all duration-300 transform mobile-menu ${
-        isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-      }`}
-    >
-      <div className="px-2 pt-2 pb-3 sm:px-3 bg-black/90 backdrop-blur-sm border-t border-blue-500">
-        <div className="space-y-0">
+          {/* Mobile menu button */}
+          <div className="absolute top-1 right-4 z-[100] md:hidden flex items-center">
+            <button
+              type="button"
+              onClick={e => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsMenuOpen(!isMenuOpen);
+              }}
+              className="w-10 h-5 relative focus:outline-none menu-button p-4"
+              aria-label="Menu"
+              style={{ minWidth: 48, minHeight: 48 }}
+            >
+              <span className={`absolute left-2 w-6 h-0.5 transform transition-all duration-300 ${
+                isScrolled ? 'bg-gray-600' : 'bg-white'
+              } ${
+                isMenuOpen ? 'rotate-45 translate-y-2.5' : 'translate-y-1'
+              }`} />
+              <span className={`absolute left-2 w-6 h-0.5 transform transition-all duration-300 ${
+                isScrolled ? 'bg-gray-600' : 'bg-white'
+              } ${
+                isMenuOpen ? 'opacity-0' : 'translate-y-3'
+              }`} />
+              <span className={`absolute left-2 w-6 h-0.5 transform transition-all duration-300 ${
+                isScrolled ? 'bg-gray-600' : 'bg-white'
+              } ${
+                isMenuOpen ? '-rotate-45 translate-y-2.5' : 'translate-y-5'
+              }`} />
+            </button>
+          </div>
+      {/* Mobile menu */}
+      <div 
+        className={`md:hidden fixed inset-0 transition-all duration-300 transform mobile-menu flex flex-col items-center justify-center bg-black z-[99] ${
+          isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+        }`}
+        style={{ fontFamily: 'Roboto, Arial, sans-serif', background: 'black', minHeight: '100vh', minWidth: '100vw' }}
+      >
+        <div className="w-full h-full px-6 py-10 space-y-4 flex flex-col items-center justify-center">
           <button onClick={() => handleNavClick('/')} 
-            className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+            className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             Home
           </button>
           <button onClick={() => handleNavClick('/teams')} 
-            className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+            className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             Teams
           </button>
           <button onClick={() => handleNavClick('/events')} 
-            className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+            className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             Events
           </button>
           <button onClick={() => handleNavClick('/achievements')} 
-            className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+            className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             Achievements
           </button>
           <button onClick={() => handleNavClick('/about')} 
-            className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+            className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             About
           </button>
-        </div>
-        
-        {user ? (
-          <>
-            {/* Separator line for user section */}
-            <div className="border-t border-white/40 my-3"></div>
-            <div className="space-y-0">
+          {user ? (
+            <>
               <button onClick={() => handleNavClick('/profile')} 
-                className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+                className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Profile
               </button>
               <button onClick={() => handleNavClick('/admin')}
-                className="w-full text-center text-blue-400 hover:text-blue-300 px-3 py-3 text-base font-medium border-b border-white/20 hover:border-white/40 transition duration-300">
+                className="w-full text-center text-blue-400 hover:text-blue-300 px-6 py-4 rounded-lg text-xl font-medium border border-blue-400 hover:border-blue-300 transition duration-300">
                 Admin Dashboard
               </button>
               <button
@@ -264,31 +251,26 @@ const Navbar = () => {
                   handleLogout();
                   setIsMenuOpen(false);
                 }}
-                className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-3 text-base font-medium transition duration-300"
+                className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg text-xl font-medium transition duration-300"
               >
                 Logout
               </button>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* Separator line for auth section */}
-            <div className="border-t border-white/40 my-3"></div>
-            <div className="space-y-0">
+            </>
+          ) : (
+            <>
               <button onClick={() => handleNavClick('/login')}
-                className="w-full text-center text-white hover:text-blue-400 px-3 py-3 text-base font-medium transition duration-300 border-b border-white/20 hover:border-white/40">
+                className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Login
               </button>
               <button onClick={() => handleNavClick('/register')}
-                className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-3 text-base font-medium transition duration-300">
+                className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Register
               </button>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
-    </>
+</nav>
   );
 };
 export default Navbar;

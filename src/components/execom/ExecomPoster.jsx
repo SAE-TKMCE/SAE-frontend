@@ -1,4 +1,5 @@
 import React from 'react';
+import ErrorPage from '../../pages/ErrorPage';
 
 function SocialIcon({ href, label, children }) {
   if (!href) return null;
@@ -17,12 +18,7 @@ function SocialIcon({ href, label, children }) {
 
 export default function ExecomPoster({ members }) {
   if (!members || members.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <div className="text-4xl mb-2">👥</div>
-        <p className="text-gray-600">No Execom members to display.</p>
-      </div>
-    );
+    return <ErrorPage code={404} message="No Execom Members Found" details="There are currently no Execom members to display." />;
   }
 
   return (

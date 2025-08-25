@@ -45,27 +45,16 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Our Teams */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Our Teams</h3>
-            <ul className="space-y-2">
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">VEGHA</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">HBAJA</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">DRONA</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">XLR8 Racing</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">XLR8FST</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">Aerex</Link></li>
-              <li><Link to="/teams" className="text-gray-300 hover:text-white">SPOX</Link></li>
-            </ul>
-          </div>
+         
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              SAE TKMCE © 2025. All rights reserved.<br></br>
               Designed and Maintained by the <span className="font-semibold text-red-500">WEB Team, SAE TKMCE.</span>
+              <br></br>SAE TKMCE © 2025. All rights reserved.
+              
             </p>
           </div>
         </div>
