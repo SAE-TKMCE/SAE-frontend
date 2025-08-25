@@ -8,37 +8,37 @@ const highlights = [
 	{
 		title: "VEGHA TKMCE",
 		description: "Green Hybrid Automotive Innovations.",
-		video: "/videos/vegha-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/vegha-highlight.mp4?updatedAt=1756152537821",
 		poster: "/images/teams/veghalogo.png",
 	},
 	{
 		title: "DRONA TKMCE",
 		description: "Drona SAE Team in action.",
-		video: "/videos/drona-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/drona-highlight.mp4?updatedAt=1756152542158",
 		poster: "/images/teams/DRONA_LW.png",
 	},
 	{
 		title: "XLR8 Racing TKMCE",
 		description: "Formula SAE Racing Team moments.",
-		video: "/videos/xlr8-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/xlr8-highlight.mp4?updatedAt=1756152538878",
 		poster: "/images/teams/xlr8-racing.png",
 	},
 	{
 		title: "XLR8FST TKMCE",
 		description: "Formula Student Racing Team .",
-		video: "/videos/xlr8fst-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/xlr8fst-highlight.mp4?updatedAt=1756152539394",
 		poster: "/images/teams/xlr8-fst.png",
 	},
 	{
 		title: "AeroSAE TKMCE",
 		description: "Fixed Wing UAV Team moments.",
-		video: "/videos/aerex-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/aerex-highlight.mp4?updatedAt=1756152541566",
 		poster: "/images/teams/Aerex-logo.png",
 	},
 	{
 		title: "SPOX TKMCE",
 		description: "Bicycle Design Team.",
-		video: "/videos/spox-highlight.mp4",
+		video: "https://ik.imagekit.io/kxjredlkp/Team%20Highlights/spox-highlight.mp4?updatedAt=1756152539708",
 		poster: "/images/teams/SPOX-LOGO.png",
 	}
 ];
