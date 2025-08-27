@@ -8,37 +8,37 @@ const highlights = [
 	{
 		title: "VEGHA TKMCE",
 		description: "Green Hybrid Automotive Innovations.",
-		video: "/videos/vegha-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/vegha-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy92ZWdoYS1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5ODA5LCJleHAiOjE3ODc4NjU4MDl9.q-QKpNyvYv2pXAbMC4k8IW7FtDKRlh8CXupy6OxLBDA",
 		poster: "/images/teams/veghalogo.png",
 	},
 	{
 		title: "DRONA TKMCE",
 		description: "Drona SAE Team in action.",
-		video: "/videos/drona-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/drona-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9kcm9uYS1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5NjY2LCJleHAiOjE3ODc4NjU2NjZ9.3qomMdFz5B9QGy_Uau5YCtVNzePvVvBRRnqSKyZ03Y8",
 		poster: "/images/teams/DRONA_LW.png",
 	},
 	{
 		title: "XLR8 Racing TKMCE",
 		description: "Formula SAE Racing Team moments.",
-		video: "/videos/xlr8-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/xlr8-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy94bHI4LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4MzIsImV4cCI6MTc4Nzg2NTgzMn0.lOWi705JmPBsyhcozAqQa6JZiNpMRekxJQkkxWhip7Y",
 		poster: "/images/teams/xlr8-racing.png",
 	},
 	{
 		title: "XLR8FST TKMCE",
 		description: "Formula Student Racing Team .",
-		video: "/videos/xlr8fst-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/xlr8fst-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy94bHI4ZnN0LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4NTEsImV4cCI6MTc4Nzg2NTg1MX0.pxamuPOe10tGFoXHrWZjiNV3Zfbg3bkTbsjvTAf2DZc",
 		poster: "/images/teams/xlr8-fst.png",
 	},
 	{
 		title: "AeroSAE TKMCE",
 		description: "Fixed Wing UAV Team moments.",
-		video: "/videos/aerex-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/aerex-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9hZXJleC1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5NTgyLCJleHAiOjE3ODc4NjU1ODJ9.MmH26osTifY5fXJXRNmR2Bc0XtzJy1bz44Jz0zX7Z2o",
 		poster: "/images/teams/Aerex-logo.png",
 	},
 	{
 		title: "SPOX TKMCE",
 		description: "Bicycle Design Team.",
-		video: "/videos/spox-highlight.mp4",
+		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/spox-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9zcG94LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4NjYsImV4cCI6MTc4Nzg2NTg2Nn0.x7cnm4LhaSgX9cOwjqTLhO2YXr4aApu-7cjXKNpR7Rg",
 		poster: "/images/teams/SPOX-LOGO.png",
 	}
 ];
@@ -79,50 +79,54 @@ export default function TeamHighlightsCarousel() {
 		arrows: false,
 	};
 
-	return (
-		<div
-			ref={sectionRef}
-			style={{
-				borderRadius: "12px",
-				overflow: "hidden",
-				maxWidth: 600,
-				margin: "0 auto",
-                
-			}}
-		>
-			<Slider {...settings}>
-				{highlights.map((item, idx) => (
-					<div key={idx} style={{ width: 350 }}>
-						<div
-							style={{
-								padding: "16px 32px",
-								boxSizing: "border-box",
-							}}
-						>
-							<video
-								src={item.video}
-								poster={item.poster}
-								autoPlay
-								muted
-								loop
-								playsInline
-								style={{
-									width: "100%",
-									aspectRatio: "9/16",
-									borderRadius: 12,
-									background: "#000",
-								}}
-							/>
-							<h3 className="mt-4 text-lg font-bold text-center">
-								{item.title}
-							</h3>
-							<p className="text-sm text-center text-gray-600">
-								{item.description}
-							</p>
-						</div>
-					</div>
-				))}
-			</Slider>
-		</div>
-	);
+	 const [videoLoading, setVideoLoading] = React.useState(Array(highlights.length).fill(true));
+
+	 return (
+		 <div
+			 ref={sectionRef}
+			 style={{
+				 borderRadius: "12px",
+				 overflow: "hidden",
+				 maxWidth: 600,
+				 margin: "0 auto",
+			 }}
+		 >
+			 <Slider {...settings}>
+				 {highlights.map((item, idx) => (
+					 <div key={idx} style={{ width: 350 }}>
+						 <div style={{ padding: "16px 32px", boxSizing: "border-box" }}>
+							 <div style={{ position: "relative" }}>
+								 {videoLoading[idx] && (
+									 <div style={{
+										 position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+										 display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.5)", zIndex: 2
+									 }}>
+										 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+									 </div>
+								 )}
+								 <video
+									 src={item.video}
+									 poster={item.poster}
+									 autoPlay
+									 muted
+									 loop
+									 playsInline
+									 style={{ width: "100%", aspectRatio: "9/16", borderRadius: 12, background: "#000" }}
+									 onLoadedData={() => {
+										 setVideoLoading((prev) => {
+											 const updated = [...prev];
+											 updated[idx] = false;
+											 return updated;
+										 });
+									 }}
+								 />
+							 </div>
+							 <h3 className="mt-4 text-lg font-bold text-center">{item.title}</h3>
+							 <p className="text-sm text-center text-gray-600">{item.description}</p>
+						 </div>
+					 </div>
+				 ))}
+			 </Slider>
+		 </div>
+	 );
 }

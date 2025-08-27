@@ -4,6 +4,7 @@ import { eventsService } from '../services/events';
 import TeamHighlightsCarousel from '../components/TeamHighlightsCarousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 
+
 const Home = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);

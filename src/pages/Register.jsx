@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+
+
 const Register = () => {
   const [embedUrl, setEmbedUrl] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,6 +27,7 @@ const Register = () => {
   }, []);
 
   return (
+    
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 text-white">
       <div className="max-w-lg w-full p-8  bg-white bg-opacity-0 animate-fade-in">
         <br></br>
@@ -45,8 +48,7 @@ const Register = () => {
               height="600"
               frameBorder="0"
               allowFullScreen
-              style={{ borderRadius: '1rem', background: 'white' }}
-            />
+              style={{ borderRadius: '1rem', background: 'white' }} />
           </div>
         ) : (
           <div className="flex flex-col items-center">
