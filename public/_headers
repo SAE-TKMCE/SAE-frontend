@@ -1,0 +1,2 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; connect-src 'self' https://sae-backend-fux7.onrender.com https://bmtbljnbdtzdmswopfcp.supabase.co; media-src 'self' https://sae-backend-fux7.onrender.com https://bmtbljnbdtzdmswopfcp.supabase.co; img-src 'self' https://sae-backend-fux7.onrender.com https://bmtbljnbdtzdmswopfcp.supabase.co data:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
