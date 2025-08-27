@@ -137,6 +137,7 @@ const Home = () => {
       title: 'SAE HBAJA 2025',
       position: 'AIR 12 | KERALA 3',
       year: '2025',
+      image: '/images/achievements/xlr8racing.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
           <circle cx="50" cy="60" r="25" />
@@ -146,12 +147,14 @@ const Home = () => {
           <rect x="45" y="85" width="10" height="15" />
         </svg>
       )
+      
     },
     {
       team: 'VEGHA',
       title: 'TWO Wheeler Design Competition',
       position: 'AIR 2',
       year: '2025',
+      image: '/images/achievements/vegha.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
           <circle cx="50" cy="50" r="30" />
@@ -165,6 +168,7 @@ const Home = () => {
       title: 'Design Event',
       position: 'AIR 5',
       year: '2025',
+      image: '/images/achievements/hbaja.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-green-400 fill-none stroke-2">
           <path d="M50 15 L35 30 L20 45 L35 60 L50 75 L65 60 L80 45 L65 30 Z" />
@@ -174,10 +178,11 @@ const Home = () => {
       )
     },
     {
-      team: 'AeroSAE',
+      team: 'MOBILE APP DEVELOPMENT',
       title: 'SAEINDIA SOUTHERN SECTION STUDENT CONVENTION',
       position: '1st Place',
       year: '2025',
+      image: '/images/achievements/mobileappdevelopment.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 80 100" className="stroke-yellow-400 fill-none stroke-2">
           <path d="M30 10 L50 10 L35 40 L55 40 L25 90 L45 60 L25 60 L30 10 Z" className="fill-yellow-400 stroke-none" />
@@ -574,7 +579,7 @@ const Home = () => {
                   key={index}
                   className="relative rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 overflow-hidden cursor-pointer"
                   style={{
-                    backgroundImage: `url(/images/achievements/${achievement.team.replace(/\s+/g, '').toLowerCase()}.jpg)`,
+                    backgroundImage: `url(${achievement.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     minHeight: '220px',
