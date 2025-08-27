@@ -47,7 +47,7 @@ const Achievements = () => {
       setAchievements(JSON.parse(cached));
       setLoading(false);
     } else {
-      axios.get('http://localhost:8000/api/achievements/')
+      axios.get('https://sae-backend-fux7.onrender.com/api/achievements/')
         .then(res => {
           setAchievements(res.data);
           sessionStorage.setItem('achievements', JSON.stringify(res.data));
