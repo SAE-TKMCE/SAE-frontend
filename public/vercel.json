@@ -5,16 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "script-src 'self' https://cdnjs.cloudflare.com; object-src 'none';"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; media-src 'self' https://sae.tkmce.ac.in https://your-storage-domain.com;"
+          "value": "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; object-src 'none'; media-src 'self' https://sae.tkmce.ac.in https://your-storage-domain.com https://bmtbljnbdtzdmswopfcp.supabase.co;"
         }
       ]
     }

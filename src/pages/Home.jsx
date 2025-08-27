@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { eventsService } from '../services/events';
@@ -215,37 +216,18 @@ const Home = () => {
 
   useEffect(() => {
     let vantaEffect;
-    const loadVanta = async () => {
-      if (window.VANTA) {
-        vantaEffect = window.VANTA.DOTS({
-          el: vantaRef.current,
-          mouseControls: true,
-          touchControls: true,
-          minHeight: 200.00,
-          minWidth: 200.00,
-          scale: 1.0,
-          scaleMobile: 1.0,
-          color: 0xffffff,
-          backgroundColor: 0x111111,
-        });
-      }
-    };
-    // Load Vanta.js and three.js from CDN if not already loaded
-    if (!window.VANTA) {
-      const scriptThree = document.createElement('script');
-      scriptThree.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js';
-      scriptThree.async = true;
-      document.body.appendChild(scriptThree);
-      scriptThree.onload = () => {
-        const scriptVanta = document.createElement('script');
-        scriptVanta.src = 'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js';
-        scriptVanta.async = true;
-        document.body.appendChild(scriptVanta);
-        scriptVanta.onload = loadVanta;
-      };
-    } else {
-      loadVanta();
-    }
+    const vantaNode = vantaRef.current;
+    vantaEffect = window.VANTA && window.VANTA.DOTS ? window.VANTA.DOTS({
+      el: vantaNode,
+      mouseControls: true,
+      touchControls: true,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      color: 0xffffff,
+      backgroundColor: 0x111111,
+    }) : null;
     return () => {
       if (vantaEffect && typeof vantaEffect.destroy === 'function') {
         vantaEffect.destroy();
