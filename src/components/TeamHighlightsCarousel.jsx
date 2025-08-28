@@ -8,7 +8,7 @@ const highlights = [
 	{
 		title: "VEGHA TKMCE",
 		description: "Green Hybrid Automotive Innovations.",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/vegha-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy92ZWdoYS1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5ODA5LCJleHAiOjE3ODc4NjU4MDl9.q-QKpNyvYv2pXAbMC4k8IW7FtDKRlh8CXupy6OxLBDA",
+		video: "/videos/vegha-highlight.mp4",
 		poster: "/images/teams/veghalogo.png",
 	},
 	{
