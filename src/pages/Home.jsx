@@ -14,7 +14,6 @@ const Home = () => {
   const [selectedAchievement, setSelectedAchievement] = useState(null);
   const [teamPositions, setTeamPositions] = useState([]);
   const carouselSectionRef = useRef(null);
-  const vantaRef = useRef(null);
 
   useEffect(() => {
     // Fetch events
@@ -86,7 +85,7 @@ const Home = () => {
       icon: (
         <img 
           src="/images/teams/DRONA_LW.png" 
-          alt="SPOX" 
+          alt="DRONA" 
         />
       ),
     },
@@ -105,7 +104,7 @@ const Home = () => {
       description: 'Formula Student Racing Team',
       icon: (<img 
           src="/images/teams/xlr8-fst.png" 
-          alt="SPOX" 
+          alt="XLR8FST" 
         />
         
       ),
@@ -155,7 +154,7 @@ const Home = () => {
       title: 'TWO Wheeler Design Competition',
       position: 'AIR 2',
       year: '2025',
-      image: '/images/achievements/vegha.jpg',
+      image: '/images/achievements/twowheeler.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
           <circle cx="50" cy="50" r="30" />
@@ -169,7 +168,7 @@ const Home = () => {
       title: 'Design Event',
       position: 'AIR 5',
       year: '2025',
-      image: '/images/achievements/hbaja.jpg',
+      image: '/images/achievements/designair.jpg',
       icon: (
         <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-green-400 fill-none stroke-2">
           <path d="M50 15 L35 30 L20 45 L35 60 L50 75 L65 60 L80 45 L65 30 Z" />
@@ -214,26 +213,7 @@ const Home = () => {
     },
   };
 
-  useEffect(() => {
-    let vantaEffect;
-    const vantaNode = vantaRef.current;
-    vantaEffect = window.VANTA && window.VANTA.DOTS ? window.VANTA.DOTS({
-      el: vantaNode,
-      mouseControls: true,
-      touchControls: true,
-      minHeight: 200.00,
-      minWidth: 200.00,
-      scale: 1.0,
-      scaleMobile: 1.0,
-      color: 0xffffff,
-      backgroundColor: 0x111111,
-    }) : null;
-    return () => {
-      if (vantaEffect && typeof vantaEffect.destroy === 'function') {
-        vantaEffect.destroy();
-      }
-    };
-  }, []);
+  // Vanta effect removed; background video is now used for achievements section
 
   useEffect(() => {
     // Initial positions
@@ -543,8 +523,16 @@ const Home = () => {
 
       {/* Achievements Section */}
       <section className="py-16 bg-gray-900 text-white relative overflow-hidden">
-        {/* Vanta.js Dots background */}
-        <div ref={vantaRef} className="absolute inset-0 w-full h-full z-0" style={{ minHeight: '100%', minWidth: '100%' }}></div>
+        {/* Background video for achievements section */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="/videos/achievement-bg.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ minHeight: '100%', minWidth: '100%' }}
+        ></video>
         {/* Overlay for readability */}
         <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none"></div>
         <div className="relative z-20">

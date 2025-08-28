@@ -14,31 +14,31 @@ const highlights = [
 	{
 		title: "DRONA TKMCE",
 		description: "Drona SAE Team in action.",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/drona-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9kcm9uYS1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5NjY2LCJleHAiOjE3ODc4NjU2NjZ9.3qomMdFz5B9QGy_Uau5YCtVNzePvVvBRRnqSKyZ03Y8",
+		video: "/videos/drona-highlight.mp4",
 		poster: "/images/teams/DRONA_LW.png",
 	},
 	{
 		title: "XLR8 Racing TKMCE",
 		description: "Formula SAE Racing Team moments.",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/xlr8-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy94bHI4LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4MzIsImV4cCI6MTc4Nzg2NTgzMn0.lOWi705JmPBsyhcozAqQa6JZiNpMRekxJQkkxWhip7Y",
+		video: "/videos/xlr8-highlight.mp4",
 		poster: "/images/teams/xlr8-racing.png",
 	},
 	{
 		title: "XLR8FST TKMCE",
 		description: "Formula Student Racing Team .",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/xlr8fst-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy94bHI4ZnN0LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4NTEsImV4cCI6MTc4Nzg2NTg1MX0.pxamuPOe10tGFoXHrWZjiNV3Zfbg3bkTbsjvTAf2DZc",
+		video: "/videos/xlr8fst-highlight.mp4",
 		poster: "/images/teams/xlr8-fst.png",
 	},
 	{
 		title: "AeroSAE TKMCE",
 		description: "Fixed Wing UAV Team moments.",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/aerex-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9hZXJleC1oaWdobGlnaHQubXA0IiwiaWF0IjoxNzU2MzI5NTgyLCJleHAiOjE3ODc4NjU1ODJ9.MmH26osTifY5fXJXRNmR2Bc0XtzJy1bz44Jz0zX7Z2o",
+		video: "/videos/aerex-highlight.mp4",
 		poster: "/images/teams/Aerex-logo.png",
 	},
 	{
 		title: "SPOX TKMCE",
 		description: "Bicycle Design Team.",
-		video: "https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/sign/SAE-TKMCE/Highlights/spox-highlight.mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV85MDZmMDVhNC1lNmNmLTQ5YjMtODM4Ni02NzJmYTg5MjMyMjgiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJTQUUtVEtNQ0UvSGlnaGxpZ2h0cy9zcG94LWhpZ2hsaWdodC5tcDQiLCJpYXQiOjE3NTYzMjk4NjYsImV4cCI6MTc4Nzg2NTg2Nn0.x7cnm4LhaSgX9cOwjqTLhO2YXr4aApu-7cjXKNpR7Rg",
+		video: "/videos/spox-highlight.mp4",
 		poster: "/images/teams/SPOX-LOGO.png",
 	}
 ];
