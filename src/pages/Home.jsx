@@ -91,7 +91,7 @@ const Home = () => {
     },
     {
       name: 'XLR8 Racing',
-      description: 'Formula SAE Racing Team',
+      description: 'Our Buggy Team',
       icon: (
         <img 
           src="/images/teams/xlr8-racing.png" 

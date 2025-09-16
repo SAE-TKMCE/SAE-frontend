@@ -13,13 +13,13 @@ const highlights = [
 	},
 	{
 		title: "DRONA TKMCE",
-		description: "Drona SAE Team in action.",
+		description: "Team Drona in action.",
 		video: "/videos/drona-highlight.mp4",
 		poster: "/images/teams/DRONA_LW.png",
 	},
 	{
 		title: "XLR8 Racing TKMCE",
-		description: "Formula SAE Racing Team moments.",
+		description: "XLR8 Racing Team moments.",
 		video: "/videos/xlr8-highlight.mp4",
 		poster: "/images/teams/xlr8-racing.png",
 	},
