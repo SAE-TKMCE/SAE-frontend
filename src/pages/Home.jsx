@@ -133,22 +133,19 @@ const Home = () => {
 
   const achievements = [
     {
-      team: 'XLR8 Racing',
-      title: 'SAE HBAJA 2025',
-      position: 'AIR 12 | KERALA 3',
+      team: 'MOBILE APP DEVELOPMENT',
+      title: 'SAEINDIA SOUTHERN SECTION STUDENT CONVENTION',
+      position: '1st Place',
       year: '2025',
-      image: '/images/achievements/xlr8racing.jpg',
+      image: '/images/achievements/mobileappdevelopment.jpg',
       icon: (
-        <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
-          <circle cx="50" cy="60" r="25" />
-          <path d="M35 45 L50 25 L65 45" />
-          <path d="M40 40 L60 40" />
-          <circle cx="50" cy="30" r="3" className="fill-yellow-400" />
-          <rect x="45" y="85" width="10" height="15" />
+        <svg width="32" height="32" viewBox="0 0 80 100" className="stroke-yellow-400 fill-none stroke-2">
+          <path d="M30 10 L50 10 L35 40 L55 40 L25 90 L45 60 L25 60 L30 10 Z" className="fill-yellow-400 stroke-none" />
         </svg>
       )
-      
     },
+
+    
     {
       team: 'VEGHA',
       title: 'TWO Wheeler Design Competition',
@@ -178,27 +175,28 @@ const Home = () => {
       )
     },
     {
-      team: 'MOBILE APP DEVELOPMENT',
-      title: 'SAEINDIA SOUTHERN SECTION STUDENT CONVENTION',
-      position: '1st Place',
+      team: 'XLR8 Racing',
+      title: 'SAE HBAJA 2025',
+      position: 'AIR 12 | KERALA 3',
       year: '2025',
-      image: '/images/achievements/mobileappdevelopment.jpg',
+      image: '/images/achievements/xlr8racing.jpg',
       icon: (
-        <svg width="32" height="32" viewBox="0 0 80 100" className="stroke-yellow-400 fill-none stroke-2">
-          <path d="M30 10 L50 10 L35 40 L55 40 L25 90 L45 60 L25 60 L30 10 Z" className="fill-yellow-400 stroke-none" />
+        <svg width="32" height="32" viewBox="0 0 100 100" className="stroke-yellow-400 fill-none stroke-2">
+          <circle cx="50" cy="60" r="25" />
+          <path d="M35 45 L50 25 L65 45" />
+          <path d="M40 40 L60 40" />
+          <circle cx="50" cy="30" r="3" className="fill-yellow-400" />
+          <rect x="45" y="85" width="10" height="15" />
         </svg>
       )
-    }
+      
+    },
+    
   ];
 
   
   const achievementDetails = {
-    'XLR8 Racing': {
-      members: [],
-      prize: '',
-      expense: '',
-    },
-    'VEGHA': {
+    'MOBILE APP DEVELOPMENT': {
       members: [],
       prize: '',
       expense: '',
@@ -208,8 +206,15 @@ const Home = () => {
       prize: '',
       expense: '',
     },
-    'MOBILE APP DEVELOPMENT': {
-      
+    'VEGHA': {
+      members: [],
+      prize: '',
+      expense: '',
+    },
+    'XLR8 Racing': {
+      members: [],
+      prize: '',
+      expense: '',
     },
   };
 
@@ -550,9 +555,9 @@ const Home = () => {
                   className="relative rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 overflow-hidden cursor-pointer"
                   style={{
                     backgroundImage: `url(${achievement.image})`,
-                    backgroundSize: 'cover',
+                    backgroundSize: 'contain',
                     backgroundPosition: 'center',
-                    minHeight: '220px',
+                    minHeight: '400px',
                     display: 'flex',
                     alignItems: 'flex-end',
                     justifyContent: 'center',
@@ -564,7 +569,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-black/40"></div>
                   <div className="relative z-10 p-6 w-full text-center">
                     
-                    <p className="text-lg font-semibold text-yellow-400 drop-shadow-lg">{achievement.position}</p>
+                    
                   </div>
                   <div className="absolute bottom-3 right-3 z-20">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-lg">
