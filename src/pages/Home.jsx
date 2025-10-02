@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { eventsService } from '../services/events';
@@ -13,6 +12,7 @@ const Home = () => {
   const [carouselFontColor, setCarouselFontColor] = useState('#111827'); // Start with gray-900
   const [selectedAchievement, setSelectedAchievement] = useState(null);
   const [teamPositions, setTeamPositions] = useState([]);
+  const [selectedPlacement, setSelectedPlacement] = useState(null);
   const carouselSectionRef = useRef(null);
 
   useEffect(() => {
@@ -217,6 +217,34 @@ const Home = () => {
       expense: '',
     },
   };
+
+  // Placements data (edit/update with real data/images)
+  const placements = [
+    {
+      student: 'ADARSH BHASKAR',
+      company: 'SOBHA CONSTRUCTIONS',
+      year: '2026',
+      image: 'https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/public/SAE-TKMCE/Placements/Adarsh.jpg',
+    },
+    {
+      student: 'VISHNU DEV',
+      company: 'SOBHA CONSTRUCTIONS',
+      year: '2026',
+      image: 'https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/public/SAE-TKMCE/Placements/Vishnu.jpg',
+    },
+    {
+      student: 'BEN MATHEWS TOM',
+      company: 'SOBHA CONSTRUCTIONS',
+      year: '2026',
+      image: 'https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/public/SAE-TKMCE/Placements/Ben.jpg',
+    },
+    {
+      student: 'AMAL DINESH',
+      company: 'EXPONENT',
+      year: '2026',
+      image: 'https://bmtbljnbdtzdmswopfcp.supabase.co/storage/v1/object/public/SAE-TKMCE/Placements/AmalDinesh.jpg',
+    },
+  ];
 
   // Vanta effect removed; background video is now used for achievements section
 
@@ -524,6 +552,88 @@ const Home = () => {
             <TeamHighlightsCarousel />
           </div>
         </div>
+      </section>
+
+      {/* Placements Section (added above Achievements) */}
+      <section className="py-16 bg-gradient-to-b from-white to-slate-100 relative overflow-hidden">
+        {/* Decorative background */}
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="/videos/achievement-bg.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ minHeight: '100%', minWidth: '100%' }}
+        ></video>
+        <div className="absolute inset-0 opacity-40 pointer-events-none">
+          <div className="w-full h-full" style={{
+            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12) 0, transparent 45%),
+                              radial-gradient(circle at 80% 30%, rgba(99,102,241,0.12) 0, transparent 45%),
+                              radial-gradient(circle at 50% 80%, rgba(16,185,129,0.12) 0, transparent 45%)`
+          }} />
+        </div>
+        <div className="relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Recent Placements</h2>
+              <p className="text-white max-w-3xl mx-auto">Celebrating our members starting their professional journeys</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {placements.map((p, idx) => (
+                <div
+                  key={`${p.company}-${idx}`}
+                  className="relative rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 overflow-hidden cursor-pointer bg-white"
+                  style={{
+                    backgroundImage: p.image ? `url(${p.image})` : 'none',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    minHeight: '620px',
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    justifyContent: 'center',
+                  }}
+                  onClick={() => setSelectedPlacement(p)}
+                  data-aos="fade-up"
+                  data-aos-delay={idx * 100}
+                >
+                  <div className="absolute inset-0 bg-black/35"></div>
+                  <div className="relative z-10 p-5 w-full text-center text-white">
+                
+                  </div>
+                  <div className="absolute bottom-3 right-3 z-20">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-lg">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Placement Modal */}
+        {selectedPlacement && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelectedPlacement(null)}>
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                backgroundImage: selectedPlacement.image ? `url(${selectedPlacement.image})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                filter: 'blur(6px)'
+              }}
+            />
+            <div className="relative z-10 bg-white rounded-2xl p-8 max-w-lg w-full mx-4 text-gray-900 shadow-2xl" onClick={e => e.stopPropagation()}>
+              <button className="absolute top-4 right-4 text-2xl" onClick={() => setSelectedPlacement(null)}>&times;</button>
+              <h3 className="text-2xl font-bold mb-2">{selectedPlacement.student}</h3>
+              <p className="text-gray-700 mb-1"><span className="font-semibold">Company:</span> {selectedPlacement.company}</p>
+              <p className="text-gray-700 mb-1"><span className="font-semibold">Role:</span> {selectedPlacement.role}</p>
+              <p className="text-gray-700 mb-1"><span className="font-semibold">CTC:</span> {selectedPlacement.ctc}</p>
+              <p className="text-gray-700"><span className="font-semibold">Year:</span> {selectedPlacement.year}</p>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Achievements Section */}
