@@ -74,22 +74,22 @@ const Events = () => {
                   className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:scale-105 flex flex-col items-center w-full min-h-[450px]"
                   data-aos="fade-up"
                 >
-                  <div className="relative aspect-[3/4] w-full">
-                    { (event.image_url || (Array.isArray(event.images) && event.images[0])) ? (
-                      <img
-                        src={event.image_url || event.images[0]}
-                        alt={event.title}
-                        className="w-full h-full object-cover rounded-xl" />
-                    ) : (
-                      <img src="/SAE.png" alt="Event" className="h-full w-full object-contain" style={{ borderRadius: '1rem' }} />
-                    )}
-
-                    {/* Join Now Button Overlay */}
-                    <div className="absolute bottom-0 left-0 w-full flex justify-center pb-2">
+                  <div className="flex flex-col w-full">
+                    <div className="aspect-[3/4] w-full">
+                      { (event.image_url || (Array.isArray(event.images) && event.images[0])) ? (
+                        <img
+                          src={event.image_url || event.images[0]}
+                          alt={event.title}
+                          className="w-full h-full object-cover rounded-t-xl" />
+                      ) : (
+                        <img src="/SAE.png" alt="Event" className="h-full w-full object-contain rounded-t-xl" />
+                      )}
+                    </div>
+                    {/* Join Now Button */}
+                    <div className="w-full">
                       <Link
                         to={`/events/${event.id}`}
-                        className="border-2 border-green-600 text-green-600 font-bold py-1 px-3 shadow-lg hover:bg-green-600 hover:text-white transition-all duration-300 text-xs bg-transparent"
-                        style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
+                        className="w-full flex items-center justify-center border-blue-500 text-blue-500 font-bold py-3 hover:bg-blue-500 hover:text-white transition-all duration-300 text-sm bg-white"
                       >
                         JOIN NOW
                       </Link>

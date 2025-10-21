@@ -111,8 +111,10 @@ const EventDetail = () => {
           )}
 
           <div className="mt-auto">
-            <Link
-              to={`/events/${event.id}/register`}
+            <a
+              href="https://app.makemypass.com/org/sae-tkmce"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center justify-center px-6 py-3 rounded-lg font-bold uppercase tracking-wide border-2 border-blue-500 text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
             >
               <span className="flex items-center gap-2">
@@ -131,7 +133,7 @@ const EventDetail = () => {
                   />
                 </svg>
               </span>
-            </Link>
+            </a>
           </div>
         </div>
       </div>
