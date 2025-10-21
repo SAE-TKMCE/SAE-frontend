@@ -166,9 +166,16 @@ const EventRegistration = () => {
               </>
             ) : (
               <>
-                <h2 className="text-4xl font-black text-white mb-2" style={{fontFamily: 'Almarai, sans-serif'}}>
-                  Register for {event.title}
-                </h2>
+                  <div className="flex items-center justify-center mb-4">
+                    {(event.image_url || (Array.isArray(event.images) && event.images[0])) && (
+                      <div className="w-28 h-28 rounded-2xl overflow-hidden mr-4 shadow-lg">
+                        <img src={event.image_url || event.images[0]} alt={event.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <h2 className="text-4xl font-black text-white mb-2" style={{fontFamily: 'Almarai, sans-serif'}}>
+                      Register for {event.title}
+                    </h2>
+                  </div>
                 <p className="text-gray-400 text-lg">Fill in your details to complete the registration</p>
               </>
             )}

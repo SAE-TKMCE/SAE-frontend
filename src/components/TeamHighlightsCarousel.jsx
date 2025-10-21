@@ -75,13 +75,45 @@ export default function TeamHighlightsCarousel() {
 		autoplay: true,
 		autoplaySpeed: 20000,
 		centerMode: true,
+		centerPadding: '60px',
 		variableWidth: false,
 		arrows: false,
+		beforeChange: (current, next) => {
+			// Remove scale from current
+			const currentSlide = document.querySelector('.slick-current .team-highlight-content');
+			if (currentSlide) {
+				currentSlide.style.transform = 'scale(1)';
+			}
+		},
+		afterChange: (current) => {
+			// Add scale to new current
+			const currentSlide = document.querySelector('.slick-current .team-highlight-content');
+			if (currentSlide) {
+				currentSlide.style.transform = 'scale(1.1)';
+			}
+		}
 	};
 
-	 const [videoLoading, setVideoLoading] = React.useState(Array(highlights.length).fill(true));
+	const [videoLoading, setVideoLoading] = React.useState(Array(highlights.length).fill(true));
 
-	 return (
+	// Add custom styles to head
+	React.useEffect(() => {
+		const style = document.createElement('style');
+		style.textContent = `
+			.slick-center .team-highlight-content {
+				transform: scale(1.1);
+				transition: transform 0.5s ease;
+			}
+			.slick-slide:not(.slick-center) .team-highlight-content {
+				transform: scale(0.9);
+				transition: transform 0.5s ease;
+			}
+		`;
+		document.head.appendChild(style);
+		return () => {
+			document.head.removeChild(style);
+		};
+	}, []);	 return (
 		 <div
 			 ref={sectionRef}
 			 style={{
@@ -104,29 +136,31 @@ export default function TeamHighlightsCarousel() {
 										 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
 									 </div>
 								 )}
-								 <video
-									 src={item.video}
-									 poster={item.poster}
-									 autoPlay
-									 muted
-									 loop
-									 playsInline
-									 style={{ width: "100%", aspectRatio: "9/16", borderRadius: 12, background: "#000" }}
-									 onLoadedData={() => {
-										 setVideoLoading((prev) => {
-											 const updated = [...prev];
-											 updated[idx] = false;
-											 return updated;
-										 });
-									 }}
-								 />
-							 </div>
-							 <h3 className="mt-4 text-lg font-bold text-center">{item.title}</h3>
-							 <p className="text-sm text-center text-gray-600">{item.description}</p>
-						 </div>
-					 </div>
-				 ))}
-			 </Slider>
-		 </div>
-	 );
+                <div className="team-highlight-content">
+                  <video
+                    src={item.video}
+                    poster={item.poster}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    style={{ width: "100%", aspectRatio: "9/16", borderRadius: 12, background: "#000" }}
+                    onLoadedData={() => {
+                      setVideoLoading((prev) => {
+                        const updated = [...prev];
+                        updated[idx] = false;
+                        return updated;
+                      });
+                    }}
+                  />
+                  <h3 className="mt-4 text-lg font-bold text-center">{item.title}</h3>
+                  <p className="text-sm text-center text-gray-600">{item.description}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
+    </div>
+  );
 }

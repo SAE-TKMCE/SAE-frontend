@@ -65,9 +65,9 @@ const EventDetail = () => {
         
         {/* Left: Image */}
         <div className="md:w-1/2 w-full aspect-[3/4] bg-gray-900 flex items-center justify-center">
-          {event.image ? (
+          {(event.image_url || (Array.isArray(event.images) && event.images[0])) ? (
             <img
-              src={event.image}
+              src={event.image_url || event.images[0]}
               alt={event.title}
               className="w-full h-full object-cover"
             />

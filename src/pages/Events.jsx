@@ -12,19 +12,14 @@ const Events = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const cached = sessionStorage.getItem('events');
-    if (cached) {
-      setEvents(JSON.parse(cached));
-      setLoading(false);
-    } else {
-      api.get('/events')
-        .then((res) => {
-          setEvents(res.data);
-          sessionStorage.setItem('events', JSON.stringify(res.data));
-        })
-        .catch((err) => setError(err.message || 'Failed to load events'))
-        .finally(() => setLoading(false));
-    }
+    // Always fetch fresh events to ensure we have the latest data
+    api.get('/events')
+      .then((res) => {
+        setEvents(res.data);
+        sessionStorage.setItem('events', JSON.stringify(res.data));
+      })
+      .catch((err) => setError(err.message || 'Failed to load events'))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <VideoLoader />;
@@ -72,22 +67,21 @@ const Events = () => {
               <p className="text-gray-500 mt-2">Check back later for upcoming events!</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
               {events.map((event) => (
                 <div
                   key={event.id}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:scale-105 flex flex-col items-center"
-
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:scale-105 flex flex-col items-center w-full min-h-[450px]"
                   data-aos="fade-up"
                 >
                   <div className="relative aspect-[3/4] w-full">
-                    {event.image ? (
+                    { (event.image_url || (Array.isArray(event.images) && event.images[0])) ? (
                       <img
-                        src={event.image}
+                        src={event.image_url || event.images[0]}
                         alt={event.title}
                         className="w-full h-full object-cover rounded-xl" />
                     ) : (
-                      <img src="/SAE.png" alt="Achievement" className="h-full w-full object-contain" style={{ borderRadius: '1rem' }} />
+                      <img src="/SAE.png" alt="Event" className="h-full w-full object-contain" style={{ borderRadius: '1rem' }} />
                     )}
 
                     {/* Join Now Button Overlay */}

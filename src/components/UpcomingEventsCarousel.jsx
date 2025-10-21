@@ -17,10 +17,10 @@ export default function UpcomingEventsCarousel({ events }) {
 
   return (
     <div className="w-full flex justify-center items-center">
-      <div className="w-[min(100vw,400px)] aspect-[9/16] max-w-xs relative">
+      <div className="w-[min(100vw,600px)] aspect-[3/4] max-w-2xl relative">
         <Slider {...settings}>
           {events.map((event) => (
-            <div key={event.id} style={{ width: 350 }}>
+            <div key={event.id} style={{ width: 550 }}>
               <a
                 href={`/events/${event.id}`}
                 className="block group"
@@ -28,10 +28,10 @@ export default function UpcomingEventsCarousel({ events }) {
               >
                 <div
                   style={{
-                    padding: "16px 22px",
+                    padding: "24px 32px",
                     boxSizing: "border-box",
                   }}
-                  className="relative h-[400px] flex items-center justify-center  rounded-2xl  overflow-hidden"
+                  className="relative w-full h-full flex items-center justify-center rounded-3xl overflow-hidden"
                 >
                   {/* Poster/Photo only */}
                   <div className="w-full h-full flex items-center justify-center">
