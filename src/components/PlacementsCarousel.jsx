@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function PlacementsCarousel({ placements }) {
   const [imageLoading, setImageLoading] = useState(Array(placements.length).fill(true));
