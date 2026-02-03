@@ -10,6 +10,7 @@ import MediaManager from './MediaManager';
 import Settings from './Settings';
 import Dashboard from './Dashboard';
 import CreateEvent from './CreateEvent';
+import DesignTemplateManagement from './DesignTemplateManagement';
 
 // Mock auth service for development
 const authService = {
@@ -104,6 +105,7 @@ const AdminPanel = () => {
     { name: 'Memberships', href: '/admin/memberships', icon: '🎫', current: location.pathname.startsWith('/admin/memberships') },
     { name: 'Executive Committee', href: '/admin/execom', icon: '👑', current: location.pathname.startsWith('/admin/execom') },
     { name: 'Events', href: '/admin/events', icon: '🎉', current: location.pathname.startsWith('/admin/events') },
+    { name: 'Design Templates', href: '/admin/templates', icon: '🎨', current: location.pathname.startsWith('/admin/templates') },
     { name: 'Forms', href: '/admin/forms', icon: '📝', current: location.pathname.startsWith('/admin/forms') },
     { name: 'Media', href: '/admin/media', icon: '🖼️', current: location.pathname.startsWith('/admin/media') },
     { name: 'Settings', href: '/admin/settings', icon: '⚙️', current: location.pathname.startsWith('/admin/settings') },
@@ -237,6 +239,7 @@ const AdminPanel = () => {
                 <Route path="execom/*" element={<ExecomManagement />} />
                 <Route path="events" element={<EventManagement />} />
                 <Route path="events/create" element={<CreateEvent />} />
+                <Route path="templates/*" element={<DesignTemplateManagement />} />
                 <Route path="forms/*" element={<FormBuilder />} />
                 <Route path="media/*" element={<MediaManager />} />
                 <Route path="settings/*" element={<Settings />} />

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MockAuthProvider } from './contexts/AuthContextMock';
 import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,6 +11,8 @@ import EventRegistration from './pages/EventRegistration';
 import Profile from './pages/Profile';
 import Membership from './pages/Membership';
 import Payments from './pages/Payments';
+import MemberDashboard from './pages/MemberDashboard';
+import CertificateVerification from './pages/CertificateVerification';
 import Achievements from './pages/Achievements';
 import About from './pages/About';
 import Teams from './pages/Teams';
@@ -80,6 +81,18 @@ function App() {
             }
           />
           <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <MemberDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/verify-certificate/:certificateId?"
+            element={<CertificateVerification />}
+          />
+          <Route
             path="/payments"
             element={
               <PrivateRoute>
@@ -89,7 +102,6 @@ function App() {
           />
         </Routes>
       </main>
-      <Footer />
     </div>
   );
 

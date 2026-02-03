@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { eventsService } from '../services/events';
+import Footer from '../components/layout/Footer';
 
 const Home = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -431,6 +432,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+     <Footer />
     </div>
   );
 };

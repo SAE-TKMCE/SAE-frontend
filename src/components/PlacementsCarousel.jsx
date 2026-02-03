@@ -1,10 +1,34 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function PlacementsCarousel({ placements, onPlacementClick }) {
+export default function PlacementsCarousel({ placements }) {
   const [imageLoading, setImageLoading] = useState(Array(placements.length).fill(true));
+  const [maxDimensions, setMaxDimensions] = useState({ width: 0, height: 0 });
+
+  // Calculate image dimensions on load
+  const handleImageLoad = (idx, img) => {
+    const naturalWidth = img.naturalWidth;
+    const naturalHeight = img.naturalHeight;
+
+    setImageLoading(prev => {
+      const updated = [...prev];
+      updated[idx] = false;
+      return updated;
+    });
+
+    // Track max dimensions
+    setMaxDimensions(prev => ({
+      width: Math.max(prev.width, naturalWidth),
+      height: Math.max(prev.height, naturalHeight)
+    }));
+  };
+
+  // Calculate aspect ratio from max dimensions
+  const aspectRatio = maxDimensions.width && maxDimensions.height 
+    ? maxDimensions.width / maxDimensions.height 
+    : 2 / 3;
 
   const settings = {
     dots: true,
@@ -19,14 +43,12 @@ export default function PlacementsCarousel({ placements, onPlacementClick }) {
     variableWidth: false,
     arrows: false,
     beforeChange: (current, next) => {
-      // Remove scale from current
       const currentSlide = document.querySelector('.slick-current .slick-slide-content');
       if (currentSlide) {
         currentSlide.style.transform = 'scale(1)';
       }
     },
     afterChange: (current) => {
-      // Add scale to new current
       const currentSlide = document.querySelector('.slick-current .slick-slide-content');
       if (currentSlide) {
         currentSlide.style.transform = 'scale(1.1)';
@@ -35,16 +57,29 @@ export default function PlacementsCarousel({ placements, onPlacementClick }) {
   };
 
   // Add custom styles to head
-  React.useEffect(() => {
+  useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
+      .placement-image-container {
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .placement-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        borderRadius: 24px;
+      }
       .slick-center .slick-slide-content {
         transform: scale(1.1);
         transition: transform 0.5s ease;
+        
       }
       .slick-slide:not(.slick-center) .slick-slide-content {
         transform: scale(0.9);
         transition: transform 0.5s ease;
+        
       }
     `;
     document.head.appendChild(style);
@@ -58,42 +93,30 @@ export default function PlacementsCarousel({ placements, onPlacementClick }) {
       <div className="w-[min(100vw,600px)] relative">
         <Slider {...settings}>
           {placements.map((placement, idx) => (
-            <div key={`${placement.company}-${idx}`} style={{ width: 400 }}>
-              <div 
-                style={{ padding: "16px 32px", boxSizing: "border-box" }}
-                className="cursor-pointer"
-                onClick={() => onPlacementClick(placement)}
-              >
-                <div className="relative" style={{ aspectRatio: "2/3" }}>
+            <div key={`${placement.company}-${idx}`} style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>
+              <div>
+                {/* Dynamic container based on image aspect ratio */}
+                <div 
+                  className="relative"
+                  style={{ 
+                    aspectRatio: `${aspectRatio}`,
+                    minHeight: '400px',
+                    maxWidth: '100%'
+                  }}
+                >
                   {imageLoading[idx] && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/50 rounded-xl z-10">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/50 rounded-3xl z-10">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
                     </div>
                   )}
                   <div 
-                    className="relative rounded-xl shadow-lg overflow-hidden bg-gray-800 h-full transform hover:scale-105 transition-all duration-300 slick-slide-content"
+                    className="placement-image-container relative shadow-lg h-full w-full slick-slide-content"
                   >
-                    <img
+                    <img 
                       src={placement.image}
                       alt={placement.student}
-                      className="w-full h-full object-cover"
-                      onLoad={() => {
-                        setImageLoading(prev => {
-                          const updated = [...prev];
-                          updated[idx] = false;
-                          return updated;
-                        });
-                      }}
+                      onLoad={(e) => handleImageLoad(idx, e.currentTarget)}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <h3 className="text-lg font-bold mb-1">{placement.student}</h3>
-                      <p className="text-sm text-gray-300">{placement.company}</p>
-                      <p className="text-xs text-gray-400">{placement.year}</p>
-                    </div>
-                    <div className="absolute top-4 right-4 bg-blue-600/80 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                      Placed
-                    </div>
                   </div>
                 </div>
               </div>

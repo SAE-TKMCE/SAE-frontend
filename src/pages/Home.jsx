@@ -4,6 +4,7 @@ import { eventsService } from '../services/events';
 import TeamHighlightsCarousel from '../components/TeamHighlightsCarousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 import PlacementsCarousel from '../components/PlacementsCarousel';
+import Footer from '../components/layout/Footer';
 
 
 const Home = () => {
@@ -65,8 +66,7 @@ const Home = () => {
 
   const handleRegistrationClick = () => {
     console.log('🟢 Button clicked! Redirecting to registration page');
-    // Redirect to register page instead of opening modal
-    window.location.href = '/register';
+    window.location.href = '/register?position=web-team-2026';
   };
 
   const teams = [
@@ -433,15 +433,15 @@ const Home = () => {
                 0deg,
                 transparent,
                 transparent 40px,
-                rgba(59, 130, 246, 0.1) 40px,
-                rgba(59, 130, 246, 0.1) 41px
+                rgba(59, 130, 246, 0.08) 40px,
+                rgba(59, 130, 246, 0.08) 41px
               ),
               repeating-linear-gradient(
                 90deg,
                 transparent,
                 transparent 40px,
-                rgba(59, 130, 246, 0.1) 40px,
-                rgba(59, 130, 246, 0.1) 41px
+                rgba(59, 130, 246, 0.08) 40px,
+                rgba(59, 130, 246, 0.08) 41px
               )
             `
           }}></div>
@@ -845,8 +845,11 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
+   
   );
+  
 };
 
 export default Home;

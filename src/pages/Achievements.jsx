@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ErrorPage from './ErrorPage';
 import VideoLoader from '../components/VideoLoader';
+import Footer from '../components/layout/Footer';
 
 function ImageSlider({ images }) {
   const [current, setCurrent] = useState(0);
@@ -62,57 +63,110 @@ const Achievements = () => {
   if (loading) return <VideoLoader />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 text-white py-20">
-        <div className="absolute inset-0 opacity-20">
+    <div className="bg-gray-900 min-h-screen flex flex-col">
+      {/* Fixed Hero Background */}
+      <div className="fixed inset-0 h-screen bg-gray-900 z-0">
+        {/* Ceiling Grid Background Image */}
+        <div 
+          className="absolute inset-0 opacity-60"
+          style={{
+            backgroundImage: `url('/images/ceiling-grid.jpg')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'top center',
+            backgroundRepeat: 'no-repeat',
+            backgroundAttachment: 'fixed'
+          }}
+        />
+
+        {/* Grid Pattern Overlay */}
+        <div className="absolute inset-0 opacity-15">
           <div className="w-full h-full" style={{
             backgroundImage: `
               repeating-linear-gradient(
-                45deg,
+                0deg,
+                transparent,
+                transparent 50px,
+                rgba(255,255,255,0.1) 50px,
+                rgba(255,255,255,0.1) 51px
+              ),
+              repeating-linear-gradient(
+                90deg,
                 transparent,
                 transparent 50px,
                 rgba(255,255,255,0.1) 50px,
                 rgba(255,255,255,0.1) 51px
               )
-            `}}></div>
+            `
+          }}></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-black mb-6" style={{fontFamily: 'Almarai, sans-serif'}}>
-              <span className="block">OUR</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500">
-                ACHIEVEMENTS
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto mb-8">
-              Celebrating Excellence • Innovation • Teamwork
-            </p>
-          </div>
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Radial Gradients */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                             radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
+                             radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.3) 0%, transparent 50%)`,
+            backgroundSize: '800px 800px, 600px 600px, 700px 700px'
+          }}></div>
+        </div>
+
+        {/* Floating Bubble Particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 4}s`,
+                animationDuration: `${3 + Math.random() * 2}s`
+              }}
+            ></div>
+          ))}
+        </div>
+      </div>
+
+      {/* Hero Content */}
+      <section className="relative h-screen flex items-center justify-center z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Achievements</h1>
+          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+            Celebrating our success and contributions to automotive engineering
+          </p>
         </div>
       </section>
-      {/* Achievements Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="text-4xl font-black mb-10 text-center text-blue-900">Team Achievements</h1>
-        {loading ? (
-          <div className="text-center text-blue-700">Loading achievements...</div>
-        ) : error ? (
-          <ErrorPage code={500} message="Internal Error" details={error} />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {achievements.map((ach, idx) => (
-              <div key={ach.id || idx} className="bg-white rounded-2xl shadow-lg p-6">
-                <ImageSlider images={Array.isArray(ach.images) ? ach.images : (ach.images ? [ach.images] : [])} />
-                <h3 className="text-lg font-semibold text-blue-500 mb-2">{ach.year_achieved}</h3>
-                <h2 className="text-xl font-bold text-blue-700 mb-2">{ach.description}</h2>
-                <ul className="list-disc list-inside text-gray-700 mb-2">
-                  <li>{ach.title}</li>
-                </ul>
+
+      {/* Sticky Stacking Scroll Section */}
+      <div className="relative z-20">
+        <section className="relative min-h-screen bg-gray-900 flex items-center py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <h1 className="text-4xl font-black mb-10 text-center text-white">Team Achievements</h1>
+            {error ? (
+              <ErrorPage code={500} message="Internal Error" details={error} />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {achievements.map((ach, idx) => (
+                  <div key={ach.id || idx} className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-6 border border-white/20 hover:border-blue-400 transition-all duration-300 transform hover:scale-105">
+                    <ImageSlider images={Array.isArray(ach.images) ? ach.images : (ach.images ? [ach.images] : [])} />
+                    <h3 className="text-lg font-semibold text-blue-300 mb-2">{ach.year_achieved}</h3>
+                    <h2 className="text-xl font-bold text-white mb-2">{ach.description}</h2>
+                    <ul className="list-disc list-inside text-gray-200 mb-2">
+                      <li>{ach.title}</li>
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
+        </section>
       </div>
+
+      {/* Footer - Rendered only once at the end */}
+      <Footer />
     </div>
   );
 };

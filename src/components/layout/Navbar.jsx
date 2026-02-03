@@ -122,6 +122,13 @@ useEffect(() => {
             
             {user ? (
               <div className="flex items-center space-x-4">
+                <Link to="/dashboard" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
+                  isScrolled 
+                    ? 'text-gray-700 hover:text-blue-600' 
+                    : 'text-white hover:text-blue-400'
+                }`}>
+                  Dashboard
+                </Link>
                 <Link to="/profile" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
                   isScrolled 
                     ? 'text-gray-700 hover:text-blue-600' 
@@ -168,7 +175,7 @@ useEffect(() => {
                       : 'bg-blue-600 hover:bg-blue-700 text-white'
                   }`}
                 >
-                  Register
+                  Join Web Team
                 </Link>
                 
               </div>
@@ -238,6 +245,10 @@ useEffect(() => {
           </button>
           {user ? (
             <>
+              <button onClick={() => handleNavClick('/dashboard')} 
+                className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
+                Dashboard
+              </button>
               <button onClick={() => handleNavClick('/profile')} 
                 className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Profile
@@ -264,7 +275,7 @@ useEffect(() => {
               </button>
               <button onClick={() => handleNavClick('/register')}
                 className="w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
-                Register
+                Join Web Team 2026
               </button>
             </>
           )}
