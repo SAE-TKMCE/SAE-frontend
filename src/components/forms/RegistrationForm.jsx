@@ -73,8 +73,8 @@ const RegistrationForm = () => {
     setErrors({});
 
     try {
-      const apiBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
-      await axios.post(`https://sae-backend-fux7.onrender.com/api/membership/register/`, {
+      const apiBase = process.env.REACT_APP_API_BASE_URL || "https://sae-backend-fux7.onrender.com/api/achievements/" ||'http://localhost:8000';
+      await axios.post(`${apiBase}/api/membership/register/`, {
         full_name: formData.full_name,
         email: formData.email,
         phone_number: formData.phone_number,
