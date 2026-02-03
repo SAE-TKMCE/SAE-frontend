@@ -73,10 +73,9 @@ const RegistrationForm = () => {
     setErrors({});
 
     try {
-      // Fix: Use proper fallback logic
       const apiBase = process.env.REACT_APP_API_BASE_URL || "https://sae-backend-fux7.onrender.com";
       
-      console.log('API Base URL:', apiBase); // Debug log
+      console.log('API Base URL:', apiBase);
       
       const response = await axios.post(`${apiBase}/api/membership/registration/`, {
         full_name: formData.full_name,
@@ -93,7 +92,10 @@ const RegistrationForm = () => {
         why_join: formData.why_join
       });
 
-      console.log('Registration successful:', response.data); // Debug log
+      console.log('Registration successful:', response.data); // This logs the response
+      
+      // Display the message from backend
+      alert(response.data.message); // Or use a toast notification
       
       setSuccess(true);
       setFormData({
@@ -113,7 +115,7 @@ const RegistrationForm = () => {
 
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
-      console.error('Registration error:', error.response?.status, error.response?.data); // Debug log
+      console.error('Registration error:', error.response?.status, error.response?.data);
       
       if (error.response?.status === 404) {
         setErrors({ general: 'API endpoint not found. Please check if the backend server is running and the endpoint exists.' });
@@ -311,6 +313,13 @@ const RegistrationForm = () => {
         Already have an account?{' '}
         <a href="/login" className="text-blue-400 hover:text-blue-300 font-medium">
           Login here
+        </a>
+      </p>
+
+      <p className="mt-2 text-sm text-white/70 text-center">
+        Already applied?{' '}
+        <a href="/check-status" className="text-green-400 hover:text-green-300 font-medium">
+          Check your application status
         </a>
       </p>
     </form>

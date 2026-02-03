@@ -26,6 +26,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
 import ScalingViewport from './components/ScalingViewport';
+import CheckStatus from './pages/CheckStatus';
 
 function App() {
   useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/check-status" element={<CheckStatus />} />
           <Route path="/auth-debug" element={<AuthDebug />} />
           <Route path="/events" element={<Events />} />
           <Route path="/events/:id" element={<EventDetail />} />
