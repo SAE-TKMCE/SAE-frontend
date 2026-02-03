@@ -78,7 +78,7 @@ const RegistrationForm = () => {
       
       console.log('API Base URL:', apiBase); // Debug log
       
-      const response = await axios.post(`${apiBase}/api/membership/register/`, {
+      const response = await axios.post(`${apiBase}/api/membership/registration/`, {
         full_name: formData.full_name,
         email: formData.email,
         phone_number: formData.phone_number,
