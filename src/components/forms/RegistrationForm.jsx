@@ -73,8 +73,12 @@ const RegistrationForm = () => {
     setErrors({});
 
     try {
-      const apiBase = process.env.REACT_APP_API_BASE_URL || "https://sae-backend-fux7.onrender.com" ||'http://localhost:8000';
-      await axios.post(`${apiBase}/api/membership/register/`, {
+      // Fix: Use proper fallback logic
+      const apiBase = process.env.REACT_APP_API_BASE_URL || "https://sae-backend-fux7.onrender.com";
+      
+      console.log('API Base URL:', apiBase); // Debug log
+      
+      const response = await axios.post(`${apiBase}/api/membership/register/`, {
         full_name: formData.full_name,
         email: formData.email,
         phone_number: formData.phone_number,
@@ -83,12 +87,14 @@ const RegistrationForm = () => {
         semester: formData.semester,
         membership_type: 'web_team',
         skills: formData.skills,
-        github_profile: formData.github_profile,
-        portfolio_link: formData.portfolio_link,
-        linkedin_profile: formData.linkedin_profile,
+        github_profile: formData.github_profile || null,
+        portfolio_link: formData.portfolio_link || null,
+        linkedin_profile: formData.linkedin_profile || null,
         why_join: formData.why_join
       });
 
+      console.log('Registration successful:', response.data); // Debug log
+      
       setSuccess(true);
       setFormData({
         full_name: '',
@@ -107,7 +113,11 @@ const RegistrationForm = () => {
 
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
-      if (error.response?.data) {
+      console.error('Registration error:', error.response?.status, error.response?.data); // Debug log
+      
+      if (error.response?.status === 404) {
+        setErrors({ general: 'API endpoint not found. Please check if the backend server is running and the endpoint exists.' });
+      } else if (error.response?.data) {
         setErrors(error.response.data);
       } else {
         setErrors({ general: 'Application failed. Please try again.' });
