@@ -1,10 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContextMock';
 import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  // Certificates tab state
+  const [certParticipants, setCertParticipants] = useState([]);
+  const [certLoading, setCertLoading] = useState(false);
+  const [certError, setCertError] = useState("");
+  const [certEdit, setCertEdit] = useState({});
+
+  const fetchCertParticipants = async () => {
+    setCertLoading(true);
+    setCertError("");
+    try {
+      const response = await api.get('/admin/event-registrations/', { params: { event_title: 'Mobile Robotics' } });
+      if (response.status === 200) {
+        setCertParticipants(response.data);
+      } else {
+        setCertError("Failed to fetch participants.");
+      }
+    } catch (error) {
+      setCertError("Error: " + error.message);
+    }
+    setCertLoading(false);
+  };
+
+  const handleCertLinkChange = (id, value) => {
+    setCertEdit({ ...certEdit, [id]: value });
+  };
+
+  const handleCertLinkSave = async (id) => {
+    setCertLoading(true);
+    try {
+      await api.patch(`/admin/event-registrations/${id}/`, { certificate_link: certEdit[id] });
+      fetchCertParticipants();
+    } catch (error) {
+      setCertError('Error: ' + error.message);
+    }
+    setCertLoading(false);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'certificates') {
+      fetchCertParticipants();
+    }
+  }, [activeTab]);
+
+  const renderCertificatesTab = () => (
+    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <h2 className="text-xl font-semibold text-gray-900 mb-4">Certificates - Mobile Robotics</h2>
+      {certLoading && <p>Loading participants...</p>}
+      {certError && <p style={{ color: 'red' }}>{certError}</p>}
+      <table className="min-w-full bg-white border">
+        <thead>
+          <tr>
+            <th className="px-4 py-2 border">Name</th>
+            <th className="px-4 py-2 border">Email</th>
+            <th className="px-4 py-2 border">Certificate Link</th>
+            <th className="px-4 py-2 border">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {certParticipants.map((p) => (
+            <tr key={p.id}>
+              <td className="px-4 py-2 border">{p.user?.first_name} {p.user?.last_name}</td>
+              <td className="px-4 py-2 border">{p.user?.email}</td>
+              <td className="px-4 py-2 border">
+                <input
+                  type="text"
+                  value={certEdit[p.id] !== undefined ? certEdit[p.id] : p.certificate_link || ''}
+                  onChange={(e) => handleCertLinkChange(p.id, e.target.value)}
+                  className="border px-2 py-1 rounded w-full"
+                />
+              </td>
+              <td className="px-4 py-2 border">
+                <button
+                  onClick={() => handleCertLinkSave(p.id)}
+                  className="bg-blue-600 text-white px-3 py-1 rounded"
+                >
+                  Save
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
   const [users, setUsers] = useState([]);
   const [eventRegistrations, setEventRegistrations] = useState([]);
   const [events, setEvents] = useState([]);
@@ -157,6 +243,12 @@ const AdminDashboard = () => {
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
           <p className="text-gray-600">You don't have permission to access this page.</p>
         </div>
+        <button
+          onClick={() => navigate('/admin/issue-certificate')}
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+        >
+          Issue Certificate
+        </button>
       </div>
     );
   }
@@ -769,7 +861,7 @@ const AdminDashboard = () => {
         
         {/* Navigation Tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {[
+          {[ 
             { id: 'dashboard', label: 'Dashboard' },
             { id: 'membership-pending', label: 'Pending Memberships' },
             { id: 'membership-approved', label: 'Approved Memberships' },
@@ -778,6 +870,7 @@ const AdminDashboard = () => {
             { id: 'events-approved', label: 'Approved Events' },
             { id: 'events-rejected', label: 'Rejected Events' },
             { id: 'event-management', label: 'Event Management' },
+            { id: 'certificates', label: 'Certificates' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -824,6 +917,7 @@ const AdminDashboard = () => {
         {activeTab === 'events-approved' && renderEventSection(approvedEventRegistrations, 'Approved Event Registrations', 'approved')}
         {activeTab === 'events-rejected' && renderEventSection(rejectedEventRegistrations, 'Rejected Event Registrations', 'rejected')}
         {activeTab === 'event-management' && renderEventManagement()}
+        {activeTab === 'certificates' && renderCertificatesTab()}
         
         {/* Add Entry Modal */}
         {renderAddEntryModal()}

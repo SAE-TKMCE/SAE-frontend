@@ -1,4 +1,6 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -27,9 +29,20 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  // Login with backend authentication
+  const login = async (email, password) => {
+    try {
+      // Use DRF token auth endpoint (adjust if using JWT or other)
+      const response = await api.post('/auth-token/', { username: email, password });
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      // Optionally fetch user profile after login
+      const userResp = await api.get('/auth/profile/');
+      setUser(userResp.data);
+      localStorage.setItem('user', JSON.stringify(userResp.data));
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {

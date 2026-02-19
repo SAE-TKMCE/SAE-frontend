@@ -28,6 +28,7 @@ import './App.css';
 import ScalingViewport from './components/ScalingViewport';
 import CheckStatus from './pages/CheckStatus';
 
+
 function App() {
   useEffect(() => {
     AOS.init({
