@@ -77,8 +77,19 @@ export default function CertificateVerification() {
   };
 
   const handlePinKeyDown = (e, idx) => {
-    if (e.key === 'Backspace' && pin[idx] === '' && idx > 0) {
-      pinRefs[idx - 1].current?.focus();
+    if (e.key === 'Backspace') {
+      if (pin[idx] !== '') {
+        // Clear current digit
+        const newPin = [...pin];
+        newPin[idx] = '';
+        setPin(newPin);
+      } else if (idx > 0) {
+        // Move focus to previous box and clear it
+        pinRefs[idx - 1].current?.focus();
+        const newPin = [...pin];
+        newPin[idx - 1] = '';
+        setPin(newPin);
+      }
     }
     if (e.key === 'ArrowLeft' && idx > 0) pinRefs[idx - 1].current?.focus();
     if (e.key === 'ArrowRight' && idx < 3) pinRefs[idx + 1].current?.focus();
