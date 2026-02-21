@@ -119,6 +119,24 @@ export default function CertificateVerification() {
     }
   };
 
+  const handleDownload = async () => {
+    if (!certificate?.image_url) return;
+    try {
+      const res = await fetch(certificate.image_url);
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = certificate.filename || 'certificate.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Failed to download image.');
+    }
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-zinc-950 relative">
       {/* Watermark background */}
@@ -213,11 +231,9 @@ x                className={`w-12 h-12 text-center text-2xl font-bold rounded bg
               className="mx-auto border-4 border-yellow-400 rounded"
             />
 
-            <a href={certificate.image_url} target="_blank" rel="noopener noreferrer" download>
-              <button className="mt-4 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded font-semibold">
-                View Full Quality
-              </button>
-            </a>
+            <button className="mt-4 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded font-semibold" onClick={handleDownload}>
+              View Full Quality
+            </button>
           </div>
         )}
 
