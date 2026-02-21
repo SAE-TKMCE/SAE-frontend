@@ -1,36 +1,126 @@
-import React, { useState } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import confetti from 'canvas-confetti';
 import { certificatesService } from '../services/certificates';
 
-const CertificateVerification = () => {
+/* 🔧 Speedometer Loader */
+function SpeedometerLoader() {
+  const [angle, setAngle] = useState(0);
+  const [gear, setGear] = useState('1st Gear');
 
+  useEffect(() => {
+    let frame = 0;
+
+    const interval = setInterval(() => {
+      frame++;
+      // Needle starts from 0deg (leftmost), ends at 90deg (rightmost)
+      const maxAngle = 90;
+      const angle = Math.min(frame * 4.5, maxAngle); // 20 steps
+      setAngle(angle);
+      // Set gear based on angle
+      if (angle < 18) setGear('1st Gear');
+      else if (angle < 36) setGear('2nd Gear');
+      else if (angle < 54) setGear('3rd Gear');
+      else if (angle < 72) setGear('4th Gear');
+      else setGear('Redline!');
+      if (frame >= 20) clearInterval(interval);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex flex-col items-center justify-center" style={{margin:'0.5rem 0'}}>
+      <svg width="96" height="64" viewBox="0 0 48 32">
+        <path d="M8 28 A16 16 0 0 1 40 28" stroke="#eab308" strokeWidth="3" fill="none" />
+        <g style={{ transform: `rotate(${angle}deg)`, transformOrigin: '24px 28px' }}>
+          <rect x="23" y="12" width="2" height="16" fill="#f87171" />
+        </g>
+        <circle cx="24" cy="28" r="3" fill="#52525b" />
+      </svg>
+      <div className="text-yellow-400 font-bold text-base mt-2">{gear}</div>
+    </div>
+  );
+}
+
+export default function CertificateVerification() {
   const [email, setEmail] = useState('');
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState(['', '', '', '']);
+  const [animateIndex, setAnimateIndex] = useState(null);
   const [certificate, setCertificate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const pinRef0 = useRef(null);
+  const pinRef1 = useRef(null);
+  const pinRef2 = useRef(null);
+  const pinRef3 = useRef(null);
+  const pinRefs = React.useMemo(() => [pinRef0, pinRef1, pinRef2, pinRef3], [pinRef0, pinRef1, pinRef2, pinRef3]);
+
+  /* ✅ Auto-focus first PIN box */
+  useEffect(() => {
+    pinRefs[0].current?.focus();
+  }, [pinRefs]);
+
+  /* ✅ Digits only + animation */
+  const handlePinChange = (e, idx) => {
+    const digit = e.target.value.replace(/\D/g, '').slice(-1);
+    if (!digit) return;
+
+    const newPin = [...pin];
+    newPin[idx] = digit;
+    setPin(newPin);
+    setAnimateIndex(idx);
+    setTimeout(() => setAnimateIndex(null), 150);
+
+    if (idx < 3) pinRefs[idx + 1].current?.focus();
+  };
+
+  const handlePinKeyDown = (e, idx) => {
+    if (e.key === 'Backspace' && pin[idx] === '' && idx > 0) {
+      pinRefs[idx - 1].current?.focus();
+    }
+    if (e.key === 'ArrowLeft' && idx > 0) pinRefs[idx - 1].current?.focus();
+    if (e.key === 'ArrowRight' && idx < 3) pinRefs[idx + 1].current?.focus();
+  };
+
+  /* ✅ Paste full PIN */
+  const handlePinPaste = (e) => {
+    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 4);
+    if (pasted.length === 4) {
+      setPin(pasted.split(''));
+      pinRefs[3].current?.focus();
+    }
+  };
   const handleVerify = async (e) => {
     e.preventDefault();
     setError(null);
     setCertificate(null);
-    if (!email.trim() || !pin.trim()) {
-      setError('Please enter both email and PIN');
+
+    const pinValue = pin.join('');
+    if (!email.trim() || pinValue.length !== 4 || pin.includes('')) {
+      setError('Please enter a valid email and Last 4-digit Ticket Code');
       return;
     }
+
     setLoading(true);
     try {
-      const data = await certificatesService.verifyCertificate(email, pin);
+      const data = await certificatesService.verifyCertificate(email, pinValue);
       setCertificate(data);
+
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials or certificate not found');
+      setError(err?.response?.data?.error || 'Invalid credentials or certificate not found');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full relative" style={{background:'#18181b'}}>
+    <div className="min-h-screen w-full flex items-center justify-center bg-zinc-950 relative">
       {/* Watermark background */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none" aria-hidden="true">
         <svg width="100%" height="100%" style={{position:'absolute',top:0,left:0}}>
@@ -42,94 +132,96 @@ const CertificateVerification = () => {
           <rect width="100%" height="100%" fill="url(#watermark)" />
         </svg>
       </div>
-      <div className="relative z-10 max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        {/* Logos and Heading */}
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center gap-10 mb-2">
-          </div>
-          
-          
-        </div>
-          {/* Heading and Description */}
-          <div className="flex flex-col items-center mb-4">
-            <div className="text-4xl font-extrabold tracking-widest text-yellow-400 mb-1" style={{letterSpacing:'0.1em'}}>CERTIFICATE</div>
-            <div className="text-gray-200 font-semibold text-lg mb-2">Verification Portal</div>
-            <div className="text-gray-400 text-sm mb-4">Society of Automotive Engineers • TKM College of Engineering</div>
-          </div>
+      <div className="max-w-lg w-full bg-zinc-900 p-8 rounded-xl border border-yellow-900 z-10">
 
-        <div className="bg-zinc-900/90 shadow-lg rounded-2xl p-8 mb-8 border border-yellow-900">
-          <form onSubmit={handleVerify} className="flex flex-col gap-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-bold text-gray-200 mb-1">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter your registered email"
-                className="mt-1 flex-1 focus:ring-yellow-400 focus:border-yellow-400 block w-full min-w-0 rounded-md sm:text-sm border-zinc-700 bg-zinc-800 text-gray-100 px-4 py-2"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="pin" className="block text-sm font-bold text-gray-200 mb-1">Last 4 digits of Ticket Code (PIN)</label>
-              <input
-                type="password"
-                name="pin"
-                id="pin"
-                value={pin}
-                onChange={e => setPin(e.target.value)}
-                placeholder="Enter your PIN"
-                className="mt-1 flex-1 focus:ring-yellow-400 focus:border-yellow-400 block w-full min-w-0 rounded-md sm:text-sm border-zinc-700 bg-zinc-800 text-gray-100 px-4 py-2"
-                required
-                maxLength={4}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`inline-flex items-center justify-center px-6 py-2 border border-yellow-400 text-base font-bold rounded-md shadow-sm text-gray-900 bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-400 transition ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
-            >
-              {loading ? (
-                <svg className="animate-spin h-5 w-5 text-gray-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                </svg>
-              ) : (
-                'View Certificate'
-              )}
-            </button>
-          </form>
+        <div className="text-center mb-6">
+          <div className="text-4xl font-extrabold tracking-widest text-yellow-400">
+            CERTIFICATE
+          </div>
+          <div className="text-gray-300">Verification Portal</div>
+
+        
         </div>
-        {/* Error Message */}
+
+        <form onSubmit={handleVerify} className="space-y-6">
+          <input
+            type="email"
+            placeholder="Registered Email"
+            className="w-full px-4 py-2 rounded bg-zinc-800 border-zinc-700 text-white"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          
+          <div className="text-sm text-gray-400">Enter the last 4 digits of your Ticket Code</div>
+          <div className="flex justify-center gap-3">
+            {[0, 1, 2, 3].map(idx => (
+              <input
+                key={idx}
+                ref={pinRefs[idx]}
+                value={pin[idx]}
+                maxLength={1}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                type="password"
+                onPaste={idx === 0 ? handlePinPaste : undefined}
+                onChange={e => handlePinChange(e, idx)}
+                onKeyDown={e => handlePinKeyDown(e, idx)}
+x                className={`w-12 h-12 text-center text-2xl font-bold rounded bg-zinc-800 border border-zinc-700 text-white transition-all duration-150
+                  ${animateIndex === idx ? 'scale-110 ring-2 ring-yellow-400' : ''}
+                `}
+              />
+            ))}
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded"
+          >
+            {loading ? (
+              <svg className="animate-spin h-6 w-6 mx-auto text-yellow-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            ) : 'View Certificate'}
+          </button>
+        </form>
+
+        {loading && (<div className="mt-6">
+          <SpeedometerLoader />
+        </div>
+        )}
         {error && (
-          <div className="mb-8 bg-red-900/20 border border-red-900 rounded-lg p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-200">{error}</h3>
-              </div>
-            </div>
+          <div className="mt-4 text-red-300 bg-red-900/30 p-3 rounded">
+            {error}
           </div>
         )}
-        {/* Certificate Display */}
+
         {certificate && (
-          <div className="bg-zinc-900/95 shadow rounded-2xl p-8 mt-8 text-center border border-yellow-900">
-            <div className="text-green-400 font-bold mb-2">Certificate Found for {certificate.name}</div>
-            <img src={certificate.image_url} alt="Certificate" className="mx-auto mb-3 border-4 border-yellow-400 rounded" style={{maxWidth:'100%', height:'auto'}} />
-            <a href={certificate.image_url} download={certificate.filename} target="_blank" rel="noopener noreferrer">
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold mt-2">Download Full Quality</button>
+          <div className="mt-6 bg-zinc-950 p-6 rounded-xl border border-green-700 text-center">
+            <div className="text-green-400 font-bold mb-2">
+              ✅ Verified by SAE TKMCE
+            </div>
+
+            <div className="text-white mb-2">
+              Certificate Found for <b>{certificate.name}</b>
+            </div>
+
+            <img
+              src={certificate.image_url}
+              alt="Certificate"
+              className="mx-auto border-4 border-yellow-400 rounded"
+            />
+
+            <a href={certificate.image_url} target="_blank" rel="noopener noreferrer" download>
+              <button className="mt-4 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded font-semibold">
+                View Full Quality
+              </button>
             </a>
           </div>
         )}
+
       </div>
     </div>
   );
-};
-
-export default CertificateVerification;
+}

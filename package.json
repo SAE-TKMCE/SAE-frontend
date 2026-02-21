@@ -19,6 +19,7 @@
     "@types/react-router-dom": "^5.3.3",
     "aos": "^2.3.4",
     "axios": "^1.10.0",
+    "canvas-confetti": "^1.9.4",
     "express": "^4.21.2",
     "framer-motion": "^12.23.24",
     "imagekit-javascript": "^4.0.1",
