@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { certificatesService } from '../services/certificates';
-import api from '../services/api';
 
 /* 🔧 Speedometer Loader */
 function SpeedometerLoader() {
@@ -131,14 +130,22 @@ export default function CertificateVerification() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!certificate?.id) return;
-    // Use the baseURL from the shared axios instance
-    let base = api.defaults.baseURL || '';
-    // Remove trailing /api if present
-    if (base.endsWith('/api')) base = base.slice(0, -4);
-    const downloadUrl = `${base}/certificates/download/${certificate.id}/`;
-    window.open(downloadUrl, '_blank', 'noopener,noreferrer');
+    try {
+      const blob = await certificatesService.downloadCertificate(certificate.id);
+      // Create a link and trigger download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificate_${certificate.id}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Failed to download certificate.');
+    }
   };
 
   return (
