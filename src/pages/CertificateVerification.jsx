@@ -119,22 +119,13 @@ export default function CertificateVerification() {
     }
   };
 
-  const handleDownload = async () => {
-    if (!certificate?.image_url) return;
-    try {
-      const res = await fetch(certificate.image_url);
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = certificate.filename || 'certificate.png';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      alert('Failed to download image.');
-    }
+  const handleDownload = () => {
+    if (!certificate?.id) return;
+    // Backend API base URL (set in .env as REACT_APP_API_BASE_URL)
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+    const downloadUrl = `${API_BASE_URL}/certificates/download/${certificate.id}/`;
+    // Open in new tab to trigger download
+    window.open(downloadUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -232,7 +223,7 @@ x                className={`w-12 h-12 text-center text-2xl font-bold rounded bg
             />
 
             <button className="mt-4 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black rounded font-semibold" onClick={handleDownload}>
-              View Full Quality
+              Download Certificate
             </button>
           </div>
         )}
