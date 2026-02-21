@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { certificatesService } from '../services/certificates';
+import api from '../services/api';
 
 /* 🔧 Speedometer Loader */
 function SpeedometerLoader() {
@@ -121,10 +122,11 @@ export default function CertificateVerification() {
 
   const handleDownload = () => {
     if (!certificate?.id) return;
-    // Backend API base URL (set in .env as REACT_APP_API_BASE_URL)
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
-    const downloadUrl = `${API_BASE_URL}/certificates/download/${certificate.id}/`;
-    // Open in new tab to trigger download
+    // Use the baseURL from the shared axios instance
+    let base = api.defaults.baseURL || '';
+    // Remove trailing /api if present
+    if (base.endsWith('/api')) base = base.slice(0, -4);
+    const downloadUrl = `${base}/certificates/download/${certificate.id}/`;
     window.open(downloadUrl, '_blank', 'noopener,noreferrer');
   };
 
