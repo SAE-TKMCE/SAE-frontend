@@ -64,7 +64,7 @@ useEffect(() => {
       isScrolled 
         ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/20' 
         : 'bg-transparent'
-    }`}>
+    } no-print`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-1 flex items-center justify-center md:justify-start">
@@ -113,30 +113,32 @@ useEffect(() => {
               Achievements
             </Link>
             <Link to="/about" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
-              isScrolled 
-                ? 'text-gray-700 hover:text-blue-600' 
+              isScrolled
+                ? 'text-gray-700 hover:text-blue-600'
                 : 'text-white hover:text-blue-400'
             }`}>
               About
             </Link>
-            
+
+
             {user ? (
               <div className="flex items-center space-x-4">
                 <Link to="/dashboard" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
-                  isScrolled 
-                    ? 'text-gray-700 hover:text-blue-600' 
+                  isScrolled
+                    ? 'text-gray-700 hover:text-blue-600'
                     : 'text-white hover:text-blue-400'
                 }`}>
                   Dashboard
                 </Link>
                 <Link to="/profile" className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
-                  isScrolled 
-                    ? 'text-gray-700 hover:text-blue-600' 
+                  isScrolled
+                    ? 'text-gray-700 hover:text-blue-600'
                     : 'text-white hover:text-blue-400'
                 }`}>
                   Profile
                 </Link>
-                {/* Temporarily show admin for all users for testing */}
+                {/* Admin link — only visible to staff/superuser accounts */}
+                {user.isAdmin && (
                 <Link to="/admin" className={`px-3 py-2 rounded-md text-sm font-medium border transition duration-300 ${
                   isScrolled
                     ? 'text-blue-600 hover:text-blue-700 border-blue-600 hover:border-blue-700'
@@ -144,6 +146,7 @@ useEffect(() => {
                 }`}>
                   Admin
                 </Link>
+                )}
                 <button
                   onClick={handleLogout}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
@@ -167,6 +170,13 @@ useEffect(() => {
                 >
                   Login
                 </Link>
+                            <Link to="/verify-member" className={`px-3 py-2 rounded-md text-sm font-medium border transition duration-300 ${
+              isScrolled
+                ? 'text-blue-600 hover:text-blue-700 border-blue-500 hover:border-blue-700 hover:bg-blue-50'
+                : 'text-blue-300 hover:text-blue-200 border-blue-400 hover:border-blue-200'
+            }`}>
+              Verify a Member
+            </Link>
                 <Link
                   to="/register"
                   className={`px-3 py-2 rounded-md text-sm font-medium transition duration-300 ${
@@ -239,24 +249,30 @@ useEffect(() => {
             className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             Achievements
           </button>
-          <button onClick={() => handleNavClick('/about')} 
+          <button onClick={() => handleNavClick('/about')}
             className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
             About
           </button>
+          <button onClick={() => handleNavClick('/verify-member')}
+            className="w-full text-center text-blue-400 hover:text-blue-300 px-6 py-4 rounded-lg text-xl font-medium border border-blue-400 hover:border-blue-300 transition duration-300">
+            Verify Member
+          </button>
           {user ? (
             <>
-              <button onClick={() => handleNavClick('/dashboard')} 
+              <button onClick={() => handleNavClick('/dashboard')}
                 className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Dashboard
               </button>
-              <button onClick={() => handleNavClick('/profile')} 
+              <button onClick={() => handleNavClick('/profile')}
                 className="w-full text-center text-white hover:text-blue-400 px-6 py-4 rounded-lg text-xl font-medium transition duration-300">
                 Profile
               </button>
+              {user.isAdmin && (
               <button onClick={() => handleNavClick('/admin')}
                 className="w-full text-center text-blue-400 hover:text-blue-300 px-6 py-4 rounded-lg text-xl font-medium border border-blue-400 hover:border-blue-300 transition duration-300">
                 Admin Dashboard
               </button>
+              )}
               <button
                 onClick={() => {
                   handleLogout();

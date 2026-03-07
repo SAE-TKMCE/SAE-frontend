@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContextMock';
 
 // Add custom styles for the grid animation
@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    password: '', // phone number used as password
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -102,16 +102,10 @@ const Login = () => {
             Welcome Back!
           </h2>
           <p className="text-gray-400 text-lg">
-            Sign in to access your SAE TKMCE dashboard
+            Sign in with your registered email &amp; phone number
           </p>
-          <p className="mt-4 text-gray-500">
-            Don't have an account?{' '}
-            <Link
-              to="/register"
-              className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
-            >
-              Create one here
-            </Link>
+          <p className="mt-4 text-gray-500 text-sm">
+            Members only — use your SAE TKMCE Community Membership credentials
           </p>
         </div>
         
@@ -151,11 +145,11 @@ const Login = () => {
               
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                  Password
+                  Password <span className="text-gray-500 font-normal text-xs"></span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-400">🔒</span>
+                    <span className="text-gray-400">📱</span>
                   </div>
                   <input
                     id="password"
@@ -164,7 +158,7 @@ const Login = () => {
                     autoComplete="current-password"
                     required
                     className="block w-full pl-10 pr-3 py-3 bg-gray-700/50 border border-gray-600/50 text-white placeholder-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent backdrop-blur-sm transition-all duration-200"
-                    placeholder="Enter your password"
+                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
                   />
@@ -173,12 +167,14 @@ const Login = () => {
             </div>
 
             <div className="flex items-center justify-between">
+      
               <div className="text-sm">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="font-medium text-blue-400 hover:text-blue-300 bg-transparent border-none cursor-pointer transition-colors duration-200"
+                  onClick={() => alert('To reset your password, contact the SAE TKMCE admin at sae@tkmce.ac.in')}
                 >
-                  Forgot your password?
+                  Forgot password?
                 </button>
               </div>
             </div>

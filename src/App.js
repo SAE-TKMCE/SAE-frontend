@@ -22,6 +22,8 @@ import AdminDashboardDemo from './pages/AdminDashboardDemo';
 import AuthDebug from './pages/AuthDebug';
 import PrivateRoute from './components/PrivateRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import MembershipCard from './pages/MembershipCard';
+import MemberVerification from './pages/MemberVerification';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
@@ -103,6 +105,15 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/membership-card"
+            element={
+              <PrivateRoute>
+                <MembershipCard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/verify-member/:membershipId?" element={<MemberVerification />} />
         </Routes>
       </main>
     </div>

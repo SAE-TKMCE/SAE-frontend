@@ -6,12 +6,39 @@ import TeamHighlightsCarousel from '../components/TeamHighlightsCarousel';
 import UpcomingEventsCarousel from '../components/UpcomingEventsCarousel';
 import PlacementsCarousel from '../components/PlacementsCarousel';
 import Footer from '../components/layout/Footer';
-
+import { useAuth } from '../contexts/AuthContextMock';
 
 const Home = () => {
+  const { user } = useAuth();
   // const [showCertModal, setShowCertModal] = useState(false);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Typing animation for hero badge
+  const [typedText, setTypedText] = useState('SAE TKMCE');
+  const [showCursor, setShowCursor] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setTypedText('SAE TKMCE');
+      setShowCursor(false);
+      return;
+    }
+    const firstName = user.name ? user.name.split(' ')[0] : 'Member';
+    const fullText = `Hi, ${firstName}`;
+    let i = 0;
+    setTypedText('');
+    setShowCursor(true);
+    const interval = setInterval(() => {
+      if (i < fullText.length) {
+        setTypedText(fullText.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 90);
+    return () => clearInterval(interval);
+  }, [user]);
   const [carouselBgOpacity, setCarouselBgOpacity] = useState(1);
   const [carouselFontColor, setCarouselFontColor] = useState('#111827'); // Start with gray-900
   const [selectedAchievement, setSelectedAchievement] = useState(null);
@@ -329,9 +356,16 @@ const Home = () => {
             <div className="flex flex-col justify-center items-center h-full py-8 sm:py-12 md:py-16">
               
               <div className="mb-4 sm:mb-6 md:mb-8">
-                <span className="bg-blue-600 text-white px-5 sm:px-4 py-2.5 sm:py-2 text-sm sm:text-xs tracking-wider font-bold uppercase">
-                  SAE TKMCE
+                <span className="bg-blue-600 text-white px-5 sm:px-4 py-2.5 sm:py-2 text-sm sm:text-xs tracking-wider font-bold uppercase inline-flex items-center gap-0.5">
+                  {typedText}
+                  {showCursor && (
+                    <span
+                      className="inline-block w-0.5 h-4 bg-white ml-0.5 align-middle"
+                      style={{ animation: 'cursorBlink 1s step-end infinite' }}
+                    />
+                  )}
                 </span>
+                <style>{`@keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
               </div>
 
               
@@ -367,18 +401,33 @@ const Home = () => {
         `}</style>
             <div className="absolute sm:relative bottom-4 sm:bottom-[-3rem]  left-4 right-4 sm:left-auto sm:right-auto hero-buttons" style={{ zIndex: 9999 }}>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 justify-center items-center">
-                <button
-                  onClick={handleRegistrationClick}
-                  className="group relative bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white px-8 sm:px-4 md:px-5 py-3 sm:py-1.5 rounded-none font-bold text-sm sm:text-xs uppercase tracking-wide transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 w-full sm:w-auto cursor-pointer"
-                  style={{ zIndex: 9999, position: 'relative' }}
-                >
-                  <span className="relative flex items-center justify-center gap-1 sm:gap-1 pointer-events-none">
-                    <span>Join the Crew</span>
-                    <svg className="w-4 h-4 sm:w-2.5 sm:h-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5-5 5M6 12h12"></path>
-                    </svg>
-                  </span>
-                </button>
+                {user ? (
+                  <Link
+                    to="/membership-card"
+                    className="group relative bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white px-8 sm:px-4 md:px-5 py-3 sm:py-1.5 rounded-none font-bold text-sm sm:text-xs uppercase tracking-wide transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 w-full sm:w-auto cursor-pointer inline-flex items-center justify-center"
+                    style={{ zIndex: 9999, position: 'relative' }}
+                  >
+                    <span className="relative flex items-center justify-center gap-1 sm:gap-1 pointer-events-none">
+                      <svg className="w-4 h-4 sm:w-2.5 sm:h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" />
+                      </svg>
+                      <span>View Membership Card</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    onClick={handleRegistrationClick}
+                    className="group relative bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white px-8 sm:px-4 md:px-5 py-3 sm:py-1.5 rounded-none font-bold text-sm sm:text-xs uppercase tracking-wide transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-blue-500/25 w-full sm:w-auto cursor-pointer"
+                    style={{ zIndex: 9999, position: 'relative' }}
+                  >
+                    <span className="relative flex items-center justify-center gap-1 sm:gap-1 pointer-events-none">
+                      <span>Join the Crew</span>
+                      <svg className="w-4 h-4 sm:w-2.5 sm:h-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5-5 5M6 12h12"></path>
+                      </svg>
+                    </span>
+                  </button>
+                )}
                 <Link
                   to="/verify-certificate"
                   className="group relative border-2 border-blue-500 text-blue-400 px-8 sm:px-4 md:px-5 py-3 sm:py-1.5 rounded-none font-bold text-sm sm:text-xs uppercase tracking-wide hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-lg hover:shadow-blue-500/25 w-full sm:w-auto cursor-pointer"
@@ -830,14 +879,27 @@ const Home = () => {
             Join SAE TKMCE and be part of the automotive revolution
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleRegistrationClick}
-              onMouseDown={handleRegistrationClick}
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer"
-              style={{ zIndex: 50 }}
-            >
-              Join the Crew
-            </button>
+            {user ? (
+              <Link
+                to="/membership-card"
+                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer inline-flex items-center justify-center gap-2"
+                style={{ zIndex: 50 }}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2" />
+                </svg>
+                View Membership Card
+              </Link>
+            ) : (
+              <button
+                onClick={handleRegistrationClick}
+                onMouseDown={handleRegistrationClick}
+                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer"
+                style={{ zIndex: 50 }}
+              >
+                Join the Crew
+              </button>
+            )}
             <Link
               to="/about"
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300"

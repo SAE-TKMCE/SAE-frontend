@@ -9,33 +9,33 @@ const api = axios.create({
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor: attach JWT Bearer token if present, else DRF Token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token') || localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Token ${token}`;
+    const jwt = localStorage.getItem('sae_access_token');
+    const drfToken = localStorage.getItem('token');
+    if (jwt) {
+      config.headers.Authorization = `Bearer ${jwt}`;
+    } else if (drfToken) {
+      config.headers.Authorization = `Token ${drfToken}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle auth errors
+// Response interceptor: clear tokens on 401
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      const token = localStorage.getItem('token') || localStorage.getItem('access_token');
-      if (token) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('access_token');
-      }
+      localStorage.removeItem('sae_access_token');
+      localStorage.removeItem('sae_refresh_token');
+      localStorage.removeItem('token');
     }
     return Promise.reject(error);
   }
 );
 
 export default api;
+
