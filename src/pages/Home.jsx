@@ -421,7 +421,7 @@ const Home = () => {
                     style={{ zIndex: 9999, position: 'relative' }}
                   >
                     <span className="relative flex items-center justify-center gap-1 sm:gap-1 pointer-events-none">
-                      <span>Join the Crew</span>
+                      <span>Join the Force</span>
                       <svg className="w-4 h-4 sm:w-2.5 sm:h-2.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5-5 5M6 12h12"></path>
                       </svg>
