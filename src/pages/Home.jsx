@@ -897,7 +897,7 @@ const Home = () => {
                 className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg cursor-pointer"
                 style={{ zIndex: 50 }}
               >
-                Join the Crew
+                Join the Force
               </button>
             )}
             <Link

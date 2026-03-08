@@ -58,7 +58,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
               Designed and Maintained by the <span className="font-semibold text-blue-400">WEB Team, SAE TKMCE.</span>
-              <br />SAE TKMCE © 2025. All rights reserved.
+              <br />SAE TKMCE © 2025-2026. All rights reserved.
             </p>
            
           </div>

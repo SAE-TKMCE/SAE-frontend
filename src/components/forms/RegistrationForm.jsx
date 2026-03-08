@@ -146,7 +146,7 @@ const RegistrationForm = () => {
 
       <div className="mb-6 p-4 bg-blue-500/20 border border-blue-400 rounded-lg text-blue-100">
         <h3 className="font-semibold mb-2">📢 Web Team Recruitment 2026</h3>
-        <p className="text-sm">We're looking for passionate developers to join our Web Team. Skills in React, Node.js, Django, or UI/UX are highly valued!</p>
+        <p className="text-sm">We're looking for passionate developers to join our Web Team. Skills in React, Django, or UI/UX are plus!</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -24,7 +24,7 @@ const Register = () => {
       id: 'web-team-2026',
       title: 'WEB Team 2026',
       status: 'Open',
-      deadline: '7th February',
+      deadline: '12th February',
       summary: 'Recruitment for SAE TKMCE Web Team (2026).',
       projects: [
         'SAE TKMCE official website revamp',
