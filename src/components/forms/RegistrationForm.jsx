@@ -1,5 +1,87 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useRef, useState } from 'react';
+
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = '03b74bf4-b189-40c5-9cd9-17d50f227946';
+
+const INLINE_ERROR_FIELDS = new Set([
+  'full_name',
+  'email',
+  'phone_number',
+  'admission_number',
+  'branch',
+  'semester',
+  'skills',
+  'github_profile',
+  'portfolio_link',
+  'linkedin_profile',
+  'why_join'
+]);
+
+const FIELD_FOCUS_ORDER = [
+  'full_name',
+  'email',
+  'phone_number',
+  'admission_number',
+  'branch',
+  'semester',
+  'skills',
+  'github_profile',
+  'portfolio_link',
+  'linkedin_profile',
+  'why_join'
+];
+
+const toErrorString = (value) => {
+  if (!value) return '';
+  if (Array.isArray(value)) return value.map(toErrorString).filter(Boolean).join(' ');
+  if (typeof value === 'object') {
+    return Object.values(value).map(toErrorString).filter(Boolean).join(' ');
+  }
+  return String(value).trim();
+};
+
+const normalizeApiErrors = (payload) => {
+  const normalized = {};
+  const generalParts = [];
+
+  if (!payload) {
+    normalized.general = 'Application failed. Please try again.';
+    return normalized;
+  }
+
+  if (typeof payload === 'string') {
+    normalized.general = payload;
+    return normalized;
+  }
+
+  if (Array.isArray(payload)) {
+    const msg = toErrorString(payload);
+    normalized.general = msg || 'Application failed. Please try again.';
+    return normalized;
+  }
+
+  Object.entries(payload).forEach(([key, value]) => {
+    const message = toErrorString(value);
+    if (!message) return;
+
+    if (key === 'detail' || key === 'error' || key === 'message' || key === 'non_field_errors') {
+      generalParts.push(message);
+      return;
+    }
+
+    normalized[key] = message;
+  });
+
+  if (generalParts.length) {
+    normalized.general = generalParts.join(' ');
+  }
+
+  if (!Object.keys(normalized).length) {
+    normalized.general = 'Application failed. Please try again.';
+  }
+
+  return normalized;
+};
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +102,8 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const formRef = useRef(null);
+  const errorBannerRef = useRef(null);
 
   const branches = [
     'Computer Science',
@@ -33,12 +117,48 @@ const RegistrationForm = () => {
 
   const semesters = ['S2', 'S4', 'S6', ];
 
+  const extraErrors = Object.entries(errors).filter(
+    ([field, message]) =>
+      field !== 'general' &&
+      !INLINE_ERROR_FIELDS.has(field) &&
+      Boolean(toErrorString(message))
+  );
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const focusAndScrollToFirstError = (nextErrors) => {
+    window.requestAnimationFrame(() => {
+      const firstInvalidField = FIELD_FOCUS_ORDER.find((field) => Boolean(nextErrors[field]));
+
+      if (firstInvalidField && formRef.current) {
+        const fieldElement = formRef.current.querySelector(`[name="${firstInvalidField}"]`);
+        if (fieldElement) {
+          fieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (typeof fieldElement.focus === 'function') {
+            fieldElement.focus({ preventScroll: true });
+          }
+          return;
+        }
+      }
+
+      if (errorBannerRef.current) {
+        errorBannerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  };
+
+  const raiseFormErrors = (nextErrors) => {
+    setErrors(nextErrors);
+    focusAndScrollToFirstError(nextErrors);
+    alert('An error occurred. Please contact the Coordinators for review.');
   };
 
   const validateForm = () => {
@@ -60,8 +180,13 @@ const RegistrationForm = () => {
     if (!formData.skills.trim()) newErrors.skills = 'Technical skills are required';
     if (!formData.why_join.trim()) newErrors.why_join = 'Why do you want to join the Web Team? is required';
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (Object.keys(newErrors).length > 0) {
+      raiseFormErrors(newErrors);
+      return false;
+    }
+
+    setErrors({});
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -73,29 +198,55 @@ const RegistrationForm = () => {
     setErrors({});
 
     try {
-      const apiBase = process.env.REACT_APP_API_BASE_URL || "https://sae-backend-fux7.onrender.com";
-      
-      console.log('API Base URL:', apiBase);
-      
-      const response = await axios.post(`${apiBase}/api/membership/registration/`, {
-        full_name: formData.full_name,
-        email: formData.email,
-        phone_number: formData.phone_number,
-        admission_number: formData.admission_number,
-        branch: formData.branch,
-        semester: formData.semester,
-        membership_type: 'web_team',
-        skills: formData.skills,
-        github_profile: formData.github_profile || null,
-        portfolio_link: formData.portfolio_link || null,
-        linkedin_profile: formData.linkedin_profile || null,
-        why_join: formData.why_join
+      const payload = new FormData();
+      payload.append('access_key', WEB3FORMS_ACCESS_KEY);
+      payload.append('subject', `SAE Web Team Application: ${formData.full_name}`);
+      payload.append('from_name', 'SAE TKMCE Web Team Registration');
+      payload.append('botcheck', '');
+
+      payload.append('full_name', formData.full_name.trim());
+      payload.append('email', formData.email.trim());
+      payload.append('phone_number', formData.phone_number.trim());
+      payload.append('admission_number', formData.admission_number.trim());
+      payload.append('branch', formData.branch);
+      payload.append('semester', formData.semester);
+      payload.append('membership_type', 'web_team');
+      payload.append('skills', formData.skills.trim());
+      payload.append('github_profile', formData.github_profile.trim());
+      payload.append('portfolio_link', formData.portfolio_link.trim());
+      payload.append('linkedin_profile', formData.linkedin_profile.trim());
+      payload.append('why_join', formData.why_join.trim());
+
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        body: payload
       });
 
-      console.log('Registration successful:', response.data); // This logs the response
-      
-      // Display the message from backend
-      alert(response.data.message); // Or use a toast notification
+      const responseData = await response.json().catch(() => ({}));
+
+      if (!response.ok || !responseData.success) {
+        if (response.status === 400 || response.status === 422) {
+          raiseFormErrors(normalizeApiErrors(responseData));
+        } else if (response.status === 401) {
+          raiseFormErrors({ general: 'Unauthorized request (401). Web3Forms key may be invalid.' });
+        } else if (response.status === 403) {
+          raiseFormErrors({ general: 'Forbidden request (403). This submission is blocked by the API.' });
+        } else if (response.status === 404) {
+          raiseFormErrors({ general: 'Web3Forms endpoint was not found (404). Please try again later.' });
+        } else if (response.status === 429) {
+          raiseFormErrors({ general: 'Too many attempts (429). Please wait and try again.' });
+        } else if (response.status >= 500) {
+          raiseFormErrors({ general: 'Server error on form service. Please try again later.' });
+        } else if (Object.keys(responseData).length > 0) {
+          raiseFormErrors(normalizeApiErrors(responseData));
+        } else {
+          raiseFormErrors({ general: 'Application failed. Please try again.' });
+        }
+        return;
+      }
+
+      const successMessage = toErrorString(responseData.message) || 'Application submitted successfully.';
+      alert(successMessage);
       
       setSuccess(true);
       setFormData({
@@ -115,22 +266,16 @@ const RegistrationForm = () => {
 
       setTimeout(() => setSuccess(false), 5000);
     } catch (error) {
-      console.error('Registration error:', error.response?.status, error.response?.data);
-      
-      if (error.response?.status === 404) {
-        setErrors({ general: 'API endpoint not found. Please check if the backend server is running and the endpoint exists.' });
-      } else if (error.response?.data) {
-        setErrors(error.response.data);
-      } else {
-        setErrors({ general: 'Application failed. Please try again.' });
-      }
+      raiseFormErrors({
+        general: error.message || 'Network error: Unable to submit right now. Please try again.'
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl">
+    <form ref={formRef} onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl">
       {success && (
         <div className="mb-6 p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-100">
           <strong>Application Submitted Successfully!</strong>
@@ -139,8 +284,19 @@ const RegistrationForm = () => {
       )}
 
       {errors.general && (
-        <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-100">
+        <div ref={errorBannerRef} className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-100">
           {errors.general}
+        </div>
+      )}
+
+      {extraErrors.length > 0 && (
+        <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-100">
+          <p className="font-semibold">Additional validation errors:</p>
+          <ul className="mt-2 list-disc list-inside text-sm space-y-1">
+            {extraErrors.map(([field, message]) => (
+              <li key={field}>{field.replace(/_/g, ' ')}: {toErrorString(message)}</li>
+            ))}
+          </ul>
         </div>
       )}
 
@@ -235,7 +391,7 @@ const RegistrationForm = () => {
         </div>
 
         <div className="md:col-span-2 -mt-2 text-sm text-indigo-100/90">
-          This application creates your SAE TKMCE member account for login and application tracking.
+          This form submits your SAE TKMCE Web Team application through our intake form service.
         </div>
 
         <div>
@@ -259,7 +415,7 @@ const RegistrationForm = () => {
             value={formData.github_profile}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://github.com/yourusername"
+            placeholder=" ( Optional )"
           />
         </div>
 
@@ -271,7 +427,7 @@ const RegistrationForm = () => {
             value={formData.portfolio_link}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://yourportfolio.com or project link"
+            placeholder=" (Optional) "
           />
         </div>
 
@@ -283,7 +439,7 @@ const RegistrationForm = () => {
             value={formData.linkedin_profile}
             onChange={handleChange}
             className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/30 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://www.linkedin.com/in/yourusername"
+            placeholder=" (Optional) "
           />
         </div>
 
